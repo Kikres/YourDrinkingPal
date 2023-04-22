@@ -1,0 +1,102 @@
+﻿@model DrinkViewModel
+
+@{
+    ViewData["Title"] = "Home Page";
+    var drink = Model.Drink;
+}
+<section class="pt-0">
+    <div class="d-flex align-items-center">
+        <div class="col-6">
+            <img src="https://source.unsplash.com/u8Jn2rzYIps/900x900" class="card-img" alt="...">
+        </div>
+        <div class="col-6 card-body">
+            <div class="d-flex align-items-center justify-content-between">
+                <div class="align-self-baseline">
+                    <h5 class="card-title text-black fs-2">@drink.Name</h5>
+                    <span class="card-title text-primary fs-4">@drink.Tag.Name | @drink.Flavour.Name</span>
+                </div>
+                <div>
+                    <span class="card-text text-muted fs-6 mx-2">@@Kanoknartganlaya</span>
+                    <img src="https://source.unsplash.com/u8Jn2rzYIps/900x900" class="img-profile-thumb rounded-circle " alt="...">
+                </div>
+            
+            </div>
+            <div class="my-5">
+                <p class="fs-5">
+                    @drink.Description
+                </p>
+            </div>
+            <div class="">
+                <button class=" fs-3 btn h-100">
+                    <i class="fa-regular fa-heart"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex flex-column Justify-items-center my-5">
+        <div class="row my-3">
+            <div class="d-flex align-items-center gap-3 text-primary fs-3 col-4">
+                <i class="fa-solid fa-circle-minus"></i>
+                <div class="">
+                    <span class="me-2">1</span>
+                    <span>DRINK</span>
+                </div>
+                <i class="fa-solid fa-circle-plus"></i>
+            </div>
+            <div class="d-flex align-items-center gap-2 col-8">
+                <span class="fs-3 text-primary">Utrustning: </span>
+                <span class="fs-4">Highball glas,</span>
+                @foreach (var util in drink.Equipment)
+                {
+                    <span class="fs-4">@util.Name</span>
+                    
+                }
+            </div>
+        </div>
+
+
+        <div class="d-flex flex-column my-4 gap-5">
+            <div class="row">
+                <div class="col-6">
+                    <div class="d-flex flex-column gap-2">
+                        <h3>Ingridienser</h3>
+                        @foreach (var measurement in drink.Recepie.Measurements)
+                        {
+                            <div class="row">
+                                <div class="col-3">
+                                    <span class="fs-4">@measurement.Amount @measurement.Unit.Name</span>
+                                </div>
+                                <div class="col-9">
+                                    <span class="fs-4">@measurement.Ingridient.Name</span>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="d-flex flex-column">
+                        <div class="d-flex flex-column gap-2">
+                            <h3>Gör så här</h3>
+                            @for (int i = 0; i < drink.Recepie.Instructions.Count; i++)
+                            {
+                                var instruction = drink.Recepie.Instructions[i];
+                                <span class="fs-4">@i. @instruction</span>
+                            }
+                        </div>
+                    </div>
+                </div>
+                    
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <div class="d-flex flex-column gap-2">
+                        <h3>Garnering</h3>
+                        <span class="fs-4">@drink.Recepie.Garnish</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+      
+    </div>
+</section>
+

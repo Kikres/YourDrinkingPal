@@ -1,8 +1,10 @@
-﻿@{
+﻿@model HomeViewModel
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
 @*<partial name="Navigation" />*@
 <partial name="Hero" />
-<partial name="FeaturedDrinks" />
-<partial name="FeaturedDrinksTwo" />
+<partial name="FeaturedDrinks" for="FeaturedDrinksViewModel"/>
+@*<partial name="FeaturedDrinksTwo" />*@

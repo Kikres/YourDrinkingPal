@@ -1,112 +1,84 @@
-﻿
+﻿@using ApplicationLayer.Models.Partial;
+@model FeaturedDrinksViewModel
+
 <!-- Basic features section-->
 <section class="bg-light">
     <div class="container px-5">
         <div class="row gx-5 align-items-center justify-content-center justify-content-lg-between mb-4 px-0 px-md-5 pb-1">
             <div class="col-12 col-lg-6">
-                <h2 class="display-4 lh-1 mb-4">Omtyckta Drinkar</h2>
-                <p class="lead fw-normal text-muted mb-5 mb-lg-0">Vi tycker att det ska vara lätt att hitta det man letar efter, inget tjafs! Med det i åtanke så har vi samlat de populäraste drinkarna på ett och samma ställe!</p>
+                <h2 class="display-4 lh-1 mb-4">@Model.Title</h2>
+                <p class="lead fw-normal text-muted mb-5 mb-lg-0">@Model.Description</p>
             </div>
-            <div class="col">
-                <img src="https://source.unsplash.com/u8Jn2rzYIps/900x900" class="card-img-top" alt="...">
-                <div class="card">
-                    <div class="card-body text-center">
-                        <h5 class="card-title">Special title treatment</h5>
-                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                        <div class="d-flex justify-content-center align-items-center">
-                            <span class="fw-bold me-2">1</span><span class="me-4">Minuter</span>
-                            <i class="fa-solid fa-pipe"></i>
-                            <span class="fw-bold ms-4">4</span><span class="ms-2">Ingridienser</span>
+            @for (int i = 0; i < 1; i++)
+            {
+                var drink = Model.Drinks[i];
+
+                //TODO: Splitta till partial
+                <div class="col">
+                    <div class="card align-items-center">
+                        <a class="text-decoration-none w-100" asp-controller="drink" asp-route-urlSlug="@drink.UrlSlug">
+                            <div class="card-body align-self-baseline">
+                                    <h5 class="card-title text-black fs-3">@drink.Name</h5>
+                                    <span class="card-title text-primary fs-5">@drink.Tag?.Name | @drink.Flavour?.Name</span>
+                            </div>
+                        </a>
+                        <a class="text-decoration-none w-100" asp-controller="drink" asp-route-urlSlug="@drink.UrlSlug">
+                        <img src="https://source.unsplash.com/u8Jn2rzYIps/900x900" class="card-img" alt="...">
+                        </a>
+                       
+                        <div class="row card-bottom align-items-center w-100">
+                            <a class="text-decoration-none col-2" asp-controller="drink" asp-route-urlSlug="@drink.UrlSlug">
+                                <img src="https://source.unsplash.com/u8Jn2rzYIps/900x900" class="img-fluid rounded-circle" alt="...">
+                            </a>
+                            <a class="text-decoration-none col-8" asp-controller="drink" asp-route-urlSlug="@drink.UrlSlug">
+                                <div class="h-100">
+                                    <span class="card-text text-muted fs-6">@@Kanoknartganlaya</span>
+                                </div>
+                            </a>
+                            <button class="col-2 fs-3 btn h-100">
+                                <i class="fa-regular fa-heart"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
-            </div>
+            }
+
         </div>
         <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 gy-4">
-            <div class="col">
-                <img src="https://source.unsplash.com/u8Jn2rzYIps/900x900" class="card-img-top" alt="...">
-                <div class="card">
-                    <div class="card-body text-center">
-                        <h5 class="card-title">Special title treatment</h5>
-                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                        <div class="d-flex justify-content-center align-items-center">
-                            <span class="fw-bold me-2">1</span><span class="me-4">Minuter</span>
-                            <i class="fa-solid fa-pipe"></i>
-                            <span class="fw-bold ms-4">4</span><span class="ms-2">Ingridienser</span>
+            @for (int i = 1; i < Model.Drinks.Count; i++)
+            {
+                var drink = Model.Drinks[i];
+
+                <div class="col">
+                    <div class="card align-items-center">
+                        <a class="text-decoration-none w-100" asp-controller="drink" asp-route-urlSlug="@drink.UrlSlug">
+                            <div class="card-body align-self-baseline">
+                                <h5 class="card-title text-black fs-3">@drink.Name</h5>
+                                <span class="card-title text-primary fs-5">@drink.Tag?.Name | @drink.Flavour?.Name</span>
+                            </div>
+                        </a>
+                        <a class="text-decoration-none w-100" asp-controller="drink" asp-route-urlSlug="@drink.UrlSlug">
+                            <img src="https://source.unsplash.com/u8Jn2rzYIps/900x900" class="card-img" alt="...">
+                        </a>
+
+                        <div class="row card-bottom align-items-center w-100">
+                            <a class="text-decoration-none col-2" asp-controller="drink" asp-route-urlSlug="@drink.UrlSlug">
+                                <img src="https://source.unsplash.com/u8Jn2rzYIps/900x900" class="img-fluid rounded-circle" alt="...">
+                            </a>
+                            <a class="text-decoration-none col-8" asp-controller="drink" asp-route-urlSlug="@drink.UrlSlug">
+                                <div class="h-100">
+                                    <span class="card-text text-muted fs-6">@@Kanoknartganlaya</span>
+                                </div>
+                            </a>
+                            <button class="col-2 fs-3 btn h-100">
+                                <i class="fa-regular fa-heart"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col">
-                <img src="https://source.unsplash.com/u8Jn2rzYIps/900x900" class="card-img-top" alt="...">
-                <div class="card">
-                    <div class="card-body text-center">
-                        <h5 class="card-title">Special title treatment</h5>
-                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                        <div class="d-flex justify-content-center align-items-center">
-                            <span class="fw-bold me-2">1</span><span class="me-4">Minuter</span>
-                            <i class="fa-solid fa-pipe"></i>
-                            <span class="fw-bold ms-4">4</span><span class="ms-2">Ingridienser</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <img src="https://source.unsplash.com/u8Jn2rzYIps/900x900" class="card-img-top" alt="...">
-                <div class="card">
-                    <div class="card-body text-center">
-                        <h5 class="card-title">Special title treatment</h5>
-                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                        <div class="d-flex justify-content-center align-items-center">
-                            <span class="fw-bold me-2">1</span><span class="me-4">Minuter</span>
-                            <i class="fa-solid fa-pipe"></i>
-                            <span class="fw-bold ms-4">4</span><span class="ms-2">Ingridienser</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <img src="https://source.unsplash.com/u8Jn2rzYIps/900x900" class="card-img-top" alt="...">
-                <div class="card">
-                    <div class="card-body text-center">
-                        <h5 class="card-title">Special title treatment</h5>
-                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                        <div class="d-flex justify-content-center align-items-center">
-                            <span class="fw-bold me-2">1</span><span class="me-4">Minuter</span>
-                            <i class="fa-solid fa-pipe"></i>
-                            <span class="fw-bold ms-4">4</span><span class="ms-2">Ingridienser</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <img src="https://source.unsplash.com/u8Jn2rzYIps/900x900" class="card-img-top" alt="...">
-                <div class="card">
-                    <div class="card-body text-center">
-                        <h5 class="card-title">Special title treatment</h5>
-                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                        <div class="d-flex justify-content-center align-items-center">
-                            <span class="fw-bold me-2">1</span><span class="me-4">Minuter</span>
-                            <i class="fa-solid fa-pipe"></i>
-                            <span class="fw-bold ms-4">4</span><span class="ms-2">Ingridienser</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <img src="https://source.unsplash.com/u8Jn2rzYIps/900x900" class="card-img-top" alt="...">
-                <div class="card">
-                    <div class="card-body text-center">
-                        <h5 class="card-title">Special title treatment</h5>
-                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                        <div class="d-flex justify-content-center align-items-center">
-                            <span class="fw-bold me-2">1</span><span class="me-4">Minuter</span>
-                            <i class="fa-solid fa-pipe"></i>
-                            <span class="fw-bold ms-4">4</span><span class="ms-2">Ingridienser</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            }
+
         </div>
+    </div>
     </div>
 </section>

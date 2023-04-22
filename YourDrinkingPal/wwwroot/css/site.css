@@ -16,3 +16,11 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.card-bottom {
+    height: 70px;
+}
+
+.img-profile-thumb {
+    max-height: 3rem;
+}
