@@ -63,7 +63,7 @@ public class RepositoryGlass : IRepositoryGlass
     private IQueryable<Glass> IncludeParameters(QueryParamGlass queryParamGlass, DbSet<Glass> context)
     {
         var query = context.AsQueryable();
-        if (queryParamGlass.Drinks != null) query = query.Include(o => o.Drinks);
+        if (queryParamGlass.Recipes != null) query = query.Include(o => o.Recipes);
         return query;
     }
 }

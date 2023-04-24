@@ -71,4 +71,9 @@
     <ProjectReference Include="..\DataLayer\DataLayer.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Areas\Identity\Models\" />
+    <Folder Include="Areas\Identity\Views\" />
+  </ItemGroup>
+
 </Project>

@@ -15,7 +15,7 @@ public interface IRepositoryRecipe
 
     List<Recipe> GetAll(QueryParamRecipe queryParamRecipe);
 
-    Recipe? GetById(int id, QueryParamRecipe queryParamRecipe);
+    Recipe GetById(int id, QueryParamRecipe queryParamRecipe);
 
     int Update(Recipe recipe);
 }
@@ -32,7 +32,7 @@ public class RepositoryRecipe : IRepositoryRecipe
     //Fetch
     public List<Recipe> GetAll(QueryParamRecipe queryParamRecipe) => IncludeParameters(queryParamRecipe, _context.Recipe).ToList();
 
-    public Recipe? GetById(int id, QueryParamRecipe queryParamRecipe) => IncludeParameters(queryParamRecipe, _context.Recipe).FirstOrDefault(o => o.Id == id);
+    public Recipe GetById(int id, QueryParamRecipe queryParamRecipe) => IncludeParameters(queryParamRecipe, _context.Recipe).First(o => o.Id == id);
 
     //Manipulate
     public Recipe Create(Recipe recipe)
@@ -65,6 +65,8 @@ public class RepositoryRecipe : IRepositoryRecipe
         var query = context.AsQueryable();
         if (queryParamRecipe.Measurements != null) query = query.Include(o => o.Measurements);
         if (queryParamRecipe.Instructions != null) query = query.Include(o => o.Instructions);
+        if (queryParamRecipe.Glass != null) query = query.Include(o => o.Glass);
+        if (queryParamRecipe.Equipment != null) query = query.Include(o => o.Equipment);
         return query;
     }
 }

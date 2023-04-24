@@ -15,7 +15,7 @@ public interface IRepositoryUnit
 
     List<Unit> GetAll(QueryParamUnit queryParamUnit);
 
-    Unit? GetById(int id, QueryParamUnit queryParamUnit);
+    Unit GetById(int id, QueryParamUnit queryParamUnit);
 
     int Update(Unit unit);
 }
@@ -32,7 +32,7 @@ public class RepositoryUnit : IRepositoryUnit
     //Fetch
     public List<Unit> GetAll(QueryParamUnit queryParamUnit) => IncludeParameters(queryParamUnit, _context.Unit).ToList();
 
-    public Unit? GetById(int id, QueryParamUnit queryParamUnit) => IncludeParameters(queryParamUnit, _context.Unit).FirstOrDefault(o => o.Id == id);
+    public Unit GetById(int id, QueryParamUnit queryParamUnit) => IncludeParameters(queryParamUnit, _context.Unit).First(o => o.Id == id);
 
     //Manipulate
     public Unit Create(Unit unit)

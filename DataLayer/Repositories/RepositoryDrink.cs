@@ -17,6 +17,8 @@ public interface IRepositoryDrink
 
     Drink? GetById(int id, QueryParamDrink queryParamDrink);
 
+    Drink? GetByUrlSlug(string urlSlug, QueryParamDrink queryParamDrink);
+
     int Update(Drink drink);
 }
 
@@ -33,6 +35,8 @@ public class RepositoryDrink : IRepositoryDrink
     public List<Drink> GetAll(QueryParamDrink queryParamDrink) => IncludeParameters(queryParamDrink, _context.Drink).ToList();
 
     public Drink? GetById(int id, QueryParamDrink queryParamDrink) => IncludeParameters(queryParamDrink, _context.Drink).FirstOrDefault(o => o.Id == id);
+
+    public Drink? GetByUrlSlug(string urlSlug, QueryParamDrink queryParamDrink) => IncludeParameters(queryParamDrink, _context.Drink).FirstOrDefault(o => o.UrlSlug == urlSlug);
 
     //Manipulate
     public Drink Create(Drink drink)
@@ -65,8 +69,6 @@ public class RepositoryDrink : IRepositoryDrink
         var query = context.AsQueryable();
         if (queryParamDrink.Tag != null) query = query.Include(o => o.Tag);
         if (queryParamDrink.Flavour != null) query = query.Include(o => o.Flavour);
-        if (queryParamDrink.Glass != null) query = query.Include(o => o.Glass);
-        if (queryParamDrink.Equipment != null) query = query.Include(o => o.Equipment);
         if (queryParamDrink.Recepie != null) query = query.Include(o => o.Recipe);
         return query;
     }

@@ -4,6 +4,6 @@ namespace ApplicationLayer.Models
 {
     public class HomeViewModel
     {
-        public FeaturedDrinksViewModel FeaturedDrinksViewModel { get; set; }
+        public DrinksFeaturedViewModel DrinksFeaturedViewModel { get; set; }
     }
 }

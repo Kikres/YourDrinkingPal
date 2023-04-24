@@ -1,9 +1,11 @@
-﻿@model DrinkViewModel
+﻿@using BusinessLayer.Models.DTO;
+@model DrinkViewModel
 
 @{
     ViewData["Title"] = "Home Page";
-    var drink = Model.Drink;
+    DrinkDto drink = Model.Drink;
 }
+
 <section class="pt-0">
     <div class="d-flex align-items-center">
         <div class="col-6">
@@ -35,7 +37,7 @@
     </div>
     <div class="d-flex flex-column Justify-items-center my-5">
         <div class="row my-3">
-            <div class="d-flex align-items-center gap-3 text-primary fs-3 col-4">
+            <div class="d-flex align-items-center justify-content-center gap-3 text-primary fs-3 col-3">
                 <i class="fa-solid fa-circle-minus"></i>
                 <div class="">
                     <span class="me-2">1</span>
@@ -43,11 +45,15 @@
                 </div>
                 <i class="fa-solid fa-circle-plus"></i>
             </div>
-            <div class="d-flex align-items-center gap-2 col-8">
-                <span class="fs-3 text-primary">Utrustning: </span>
-                <span class="fs-4">Highball glas,</span>
-                @foreach (var util in drink.Equipment)
+            <div class="d-flex align-items-center gap-2 col-3">
+                <span class="fs-3 text-primary">Glas: </span>
+                <span class="fs-4">@drink.Recipe.Glass.Name</span>
+            </div>
+            <div class="d-flex align-items-center gap-2 col-6">
+                <span class="fs-3 text-primary">Redskap: </span>
+                @foreach (var util in drink.Recipe.Equipment)
                 {
+                
                     <span class="fs-4">@util.Name</span>
                     
                 }
@@ -59,28 +65,28 @@
             <div class="row">
                 <div class="col-6">
                     <div class="d-flex flex-column gap-2">
-                        <h3>Ingridienser</h3>
-                        @foreach (var measurement in drink.Recepie.Measurements)
+                        <h3 class="fs-4">Ingridienser</h3>
+                        @foreach (var measurement in drink.Recipe.Measurements)
                         {
                             <div class="row">
                                 <div class="col-3">
-                                    <span class="fs-4">@measurement.Amount @measurement.Unit.Name</span>
+                                    <p class="fs-5">@(measurement.Amount != 0 ? measurement.Amount : "-") @measurement.Unit.Name</p>
                                 </div>
                                 <div class="col-9">
-                                    <span class="fs-4">@measurement.Ingridient.Name</span>
+                                    <p class="fs-5">@measurement.Ingridient.Name</p>
                                 </div>
                             </div>
                         }
                     </div>
                 </div>
                 <div class="col-6">
-                    <div class="d-flex flex-column">
+                    <div class="d-flex flex-column gap-2">
+                        <h3 class="fs-4">Gör så här</h3>
                         <div class="d-flex flex-column gap-2">
-                            <h3>Gör så här</h3>
-                            @for (int i = 0; i < drink.Recepie.Instructions.Count; i++)
+                            @for (int i = 0; i < drink.Recipe.Instructions.Count; i++)
                             {
-                                var instruction = drink.Recepie.Instructions[i];
-                                <span class="fs-4">@i. @instruction</span>
+                                var instruction = drink.Recipe.Instructions[i];
+                                <p class="fs-5">@instruction.Position. @instruction.Description</p>
                             }
                         </div>
                     </div>
@@ -90,8 +96,8 @@
             <div class="row">
                 <div class="col-6">
                     <div class="d-flex flex-column gap-2">
-                        <h3>Garnering</h3>
-                        <span class="fs-4">@drink.Recepie.Garnish</span>
+                        <h3 class="fs-4">Garnering</h3>
+                        <p class="fs-5">@drink.Recipe.Garnish</p>
                     </div>
                 </div>
             </div>

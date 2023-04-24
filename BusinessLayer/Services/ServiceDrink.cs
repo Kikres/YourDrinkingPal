@@ -10,34 +10,70 @@ namespace Business_Layer.Services;
 public class ServiceDrink
 {
     private readonly IRepositoryDrink _repositoryDrink;
+    private readonly IRepositoryRecipe _repositoryRecipe;
+    private readonly IRepositoryIngridient _repositoryIngridient;
+    private readonly IRepositoryUnit _repositoryUnit;
     private readonly IMapper _mapper;
 
-    public ServiceDrink(IRepositoryDrink repositoryDrink, IMapper mapper)
+    public ServiceDrink(IMapper mapper, IRepositoryDrink repositoryDrink, IRepositoryRecipe repositoryRecipe, IRepositoryIngridient repositoryIngridient, IRepositoryUnit repositoryUnit)
     {
         _mapper = mapper;
         _repositoryDrink = repositoryDrink;
+        _repositoryRecipe = repositoryRecipe;
+        _repositoryIngridient = repositoryIngridient;
+        _repositoryUnit = repositoryUnit;
     }
 
     //Fetch
     public List<DrinkDto> GetAll() => _mapper.Map<List<Drink>, List<DrinkDto>>(_repositoryDrink.GetAll(new QueryParamDrink(false)));
 
-    public List<DrinkDto> Take(int amount)
+    public List<DrinkDto> Take(int amount, bool loadRoot = false)
     {
-        var drinks = _repositoryDrink.GetAll(new QueryParamDrink(false)).Take(amount).ToList();
+        var drinks = _repositoryDrink.GetAll(new QueryParamDrink(true)).Take(amount).ToList();
 
-        foreach (var drink in drinks)
+        if (loadRoot)
         {
-            drink.Recipe
+            drinks = LoadDrinkRoot(drinks);
         }
 
         return _mapper.Map<List<Drink>, List<DrinkDto>>(drinks);
     }
 
-    public DrinkDto GetById(int id)
+    public DrinkDto? GetById(int id, bool loadRoot = false)
     {
         var drink = _repositoryDrink.GetById(id, new QueryParamDrink(true));
+        if (drink == null) return null;
+        if (loadRoot)
+        {
+            drink = LoadDrinkRoot(new List<Drink>() { drink }).First();
+        }
 
         return _mapper.Map<Drink?, DrinkDto>(drink);
+    }
+
+    public DrinkDto? GetByUrlSlug(string urlSlug, bool loadRoot = false)
+    {
+        var drink = _repositoryDrink.GetByUrlSlug(urlSlug, new QueryParamDrink(true));
+        if (drink == null) return null;
+        if (loadRoot)
+        {
+            drink = LoadDrinkRoot(new List<Drink>() { drink }).First();
+        }
+        return _mapper.Map<Drink?, DrinkDto>(drink);
+    }
+
+    private List<Drink> LoadDrinkRoot(IEnumerable<Drink> drinks)
+    {
+        foreach (var drink in drinks)
+        {
+            drink.Recipe = _repositoryRecipe.GetById(drink.RecipeId, new QueryParamRecipe(true));
+            foreach (var measurement in drink.Recipe.Measurements)
+            {
+                measurement.Ingridient = _repositoryIngridient.GetById(measurement.IngridientId, new QueryParamIngridient(false));
+                measurement.Unit = _repositoryUnit.GetById(measurement.UnitId, new QueryParamUnit(false));
+            }
+        }
+        return drinks.ToList();
     }
 
     //public ClientDto GetByName(string name) => _mapper.Map<Client?, ClientDto>(_repositoryClient.GetByName(name, new QueryParamClient()));

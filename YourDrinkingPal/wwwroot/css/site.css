@@ -1,20 +1,20 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
 }
 
 .card-bottom {
@@ -23,4 +23,9 @@ body {
 
 .img-profile-thumb {
     max-height: 3rem;
+}
+
+.window {
+    min-height: 100vh;
+    background-color: #F8F9FA;
 }

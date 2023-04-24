@@ -15,7 +15,7 @@ public interface IRepositoryIngridient
 
     List<Ingridient> GetAll(QueryParamIngridient queryParamIngridient);
 
-    Ingridient? GetById(int id, QueryParamIngridient queryParamIngridient);
+    Ingridient GetById(int id, QueryParamIngridient queryParamIngridient);
 
     int Update(Ingridient ingridient);
 }
@@ -32,7 +32,7 @@ public class RepositoryIngridient : IRepositoryIngridient
     //Fetch
     public List<Ingridient> GetAll(QueryParamIngridient queryParamIngridient) => IncludeParameters(queryParamIngridient, _context.Ingridient).ToList();
 
-    public Ingridient? GetById(int id, QueryParamIngridient queryParamIngridient) => IncludeParameters(queryParamIngridient, _context.Ingridient).FirstOrDefault(o => o.Id == id);
+    public Ingridient GetById(int id, QueryParamIngridient queryParamIngridient) => IncludeParameters(queryParamIngridient, _context.Ingridient).First(o => o.Id == id);
 
     //Manipulate
     public Ingridient Create(Ingridient ingridient)

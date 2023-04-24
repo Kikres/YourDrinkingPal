@@ -63,7 +63,7 @@ public class RepositoryTool : IRepositoryTool
     private IQueryable<Tool> IncludeParameters(QueryParamTool queryParamTool, DbSet<Tool> context)
     {
         var query = context.AsQueryable();
-        if (queryParamTool.Drinks != null) query = query.Include(o => o.Drinks);
+        if (queryParamTool.Recipes != null) query = query.Include(o => o.Recipes);
         return query;
     }
 }

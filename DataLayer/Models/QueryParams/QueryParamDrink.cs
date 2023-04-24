@@ -4,8 +4,6 @@ public class QueryParamDrink
 {
     public bool? Tag { get; set; }
     public bool? Flavour { get; set; }
-    public bool? Glass { get; set; }
-    public bool? Equipment { get; set; }
     public bool? Recepie { get; set; }
 
     public QueryParamDrink(bool includeAll)
@@ -14,8 +12,6 @@ public class QueryParamDrink
         {
             Tag = true;
             Flavour = true;
-            Glass = true;
-            Equipment = true;
             Recepie = true;
         }
     }

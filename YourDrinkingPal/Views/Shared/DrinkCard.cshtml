@@ -1,0 +1,30 @@
+﻿@using BusinessLayer.Models.DTO;
+@model DrinkDto
+
+<div class="col">
+    <div class="card align-items-center">
+        <a class="text-decoration-none w-100" asp-controller="drink" asp-action="detail" asp-route-urlSlug="@Model.UrlSlug">
+            <div class="card-body align-self-baseline">
+                <h5 class="card-title text-black fs-3">@Model.Name</h5>
+                <span class="card-title text-primary fs-5">@Model.Tag?.Name | @Model.Flavour?.Name</span>
+            </div>
+        </a>
+        <a class="text-decoration-none w-100" asp-controller="drink" asp-action="detail" asp-route-urlSlug="@Model.UrlSlug">
+            <img src="https://source.unsplash.com/u8Jn2rzYIps/900x900" class="card-img" alt="...">
+        </a>
+
+        <div class="row card-bottom align-items-center w-100">
+            <a class="text-decoration-none col-2" asp-controller="drink" asp-route-urlSlug="@Model.UrlSlug">
+                <img src="https://source.unsplash.com/u8Jn2rzYIps/900x900" class="rounded-circle img-profile-thumb" alt="...">
+            </a>
+            <a class="text-decoration-none col-8" asp-controller="drink" asp-action="detail" asp-route-urlSlug="@Model.UrlSlug">
+                <div class="h-100">
+                    <span class="card-text text-muted fs-6">@@Kanoknartganlaya</span>
+                </div>
+            </a>
+            <button class="col-2 fs-3 btn h-100">
+                <i class="fa-regular fa-heart"></i>
+            </button>
+        </div>
+    </div>
+</div>

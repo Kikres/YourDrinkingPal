@@ -8,10 +8,12 @@ namespace BusinessLayer.Models.DTO
         public string Name { get; set; }
         public string UrlSlug { get; set; }
         public string Description { get; set; }
-        public TagDto? Tag { get; set; }
-        public FlavourDto? Flavour { get; set; }
-        public GlassDto? Glass { get; set; }
-        public List<ToolDto> Equipment { get; set; } = new List<ToolDto>();
-        public RecipeDto Recepie { get; set; }
+        public int? TagId { get; set; }
+        public TagDto? Tag { get; set; } = new TagDto();
+        public int? FlavourId { get; set; }
+        public FlavourDto? Flavour { get; set; } = new FlavourDto();
+        public int? RecipeId { get; set; }
+        public RecipeDto Recipe { get; set; } = new RecipeDto();
+        public ICollection<MeasurementDto> Measurements { get; set; } = new List<MeasurementDto>();
     }
 }

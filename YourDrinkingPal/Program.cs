@@ -42,6 +42,11 @@ namespace ApplicationLayer
 
             //INJECTION COMMON SERVICE
             builder.Services.AddScoped<ServiceDrink>();
+            builder.Services.AddScoped<ServiceFlavour>();
+            builder.Services.AddScoped<ServiceTag>();
+            builder.Services.AddScoped<ServiceGlass>();
+            builder.Services.AddScoped<ServiceUnit>();
+            builder.Services.AddScoped<ServiceIngridient>();
 
             //INJECTION SERVICE
             //builder.Services.AddScoped<IServiceAccessLevelRole, ServiceAccessLevelRole>();

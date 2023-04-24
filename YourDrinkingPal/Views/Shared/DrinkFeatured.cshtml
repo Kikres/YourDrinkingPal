@@ -1,0 +1,30 @@
+﻿@using ApplicationLayer.Models.Partial;
+@model DrinksFeaturedViewModel
+
+    
+<!-- Basic features section-->
+@if(Model.Drinks.Count != 0)
+{
+<section class="bg-light">
+    <div class="container px-5">
+        <div class="row gx-5 align-items-center justify-content-center justify-content-lg-between mb-4 px-0 px-md-5 pb-1">
+            <div class="col-12 col-lg-6">
+                <h2 class="display-4 lh-1 mb-4">@Model.Title</h2>
+                <p class="lead fw-normal text-muted mb-5 mb-lg-0">@Model.Description</p>
+            </div>
+            @for (int i = 0; i < 1; i++)
+            {
+                <partial name="DrinkCard" for="Drinks[i]" />
+            }
+
+        </div>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 gy-4">
+            @for (int i = 1; i < Model.Drinks.Count; i++)
+            {
+                    <partial name="DrinkCard" for="Drinks[i]" />
+            }
+
+        </div>
+    </div>
+</section>
+}

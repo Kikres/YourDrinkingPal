@@ -2,13 +2,13 @@
 
 public class QueryParamTool
 {
-    public bool? Drinks { get; set; }
+    public bool? Recipes { get; set; }
 
     public QueryParamTool(bool includeAll)
     {
         if (includeAll)
         {
-            Drinks = true;
+            Recipes = true;
         }
     }
 }

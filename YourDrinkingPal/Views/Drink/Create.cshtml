@@ -1,0 +1,191 @@
+﻿@using BusinessLayer.Models.DTO;
+@model DrinkCreateViewModel
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<section class="pt-0 w-75 mx-auto">
+
+    <form asp-action="Create" method="post">
+
+    <div class="d-flex align-items-center">
+        <div class="col-6">
+            <img src="https://source.unsplash.com/u8Jn2rzYIps/900x900" class="card-img" alt="...">
+        </div>
+        <div class="col-6 card-body">
+            <div class="d-flex align-items-center justify-content-between">
+                <div class="align-self-baseline d-flex flex-column gap-1">
+                    <label asp-for="Drink.Name" class="form-label">Namnet på drinken?</label>
+                    <input asp-for="Drink.Name" class="form-control" aria-required="true"/>
+                    <span asp-validation-for="Drink.Name" class="text-danger"></span>
+                    
+                    <label asp-for="Drink.TagId" class="form-label">Vilken slogan?</label>
+                        <select asp-for="Drink.TagId" class="form-control" asp-items="ViewBag.Tags"></select>
+                    <span asp-validation-for="Drink.TagId" class="text-danger"></span>
+                    
+                </div>
+                <div class="">
+                    @*TODO: Kundens användarnamn ochDrink. bild*@
+                    <span class="card-text text-muted fs-6 mx-2">@@Kanoknartganlaya</span>
+                    <img src="https://source.unsplash.com/u8Jn2rzYIps/900x900" class="img-profile-thumb rounded-circle " alt="...">
+                </div>
+
+            </div>
+            <div class="my-2">
+                    <label asp-for="Drink.FlavourId" class="form-label">Smakprofilen?</label>
+                    <select asp-for="Drink.FlavourId" class="form-control" asp-items="ViewBag.Flavours"></select>
+                    <span asp-validation-for="Drink.Name" class="text-danger"></span>
+            </div>
+            <div class="my-2">
+                    <label asp-for="Drink.Description" class="form-label">Berätta drinkens historia, hur skapades den?</label>
+                    <textarea asp-for="Drink.Description"  class="form-control" rows="5"></textarea>
+                    <span asp-validation-for="Drink.Description" class="text-danger"></span>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <label asp-for="Drink.Recipe.GlassId" class="form-label">Vilket glas passar?</label>
+                        <select asp-for="Drink.Recipe.GlassId" class="form-control" asp-items="ViewBag.Glasses"></select>
+                        <span asp-validation-for="Drink.Recipe.GlassId" class="text-danger"></span>
+                </div>
+                <div class="col-6">
+                    <label asp-for="Drink.TagId" class="form-label">Garnering?</label>
+                    <select asp-for="Drink.TagId" class="form-control" asp-items="ViewBag.Garnishes"></select>
+                        <span asp-validation-for="Drink.TagId" class="text-danger"></span>
+                </div>
+            </div>
+            <button type="submit">Submit</button>
+        </div>
+    </div>
+    <div class="d-flex flex-column Justify-items-center my-5 mx-1">
+        <div class="d-flex flex-column my-4 gap-5">
+            <div class="row">
+                <div class="col-6">
+                    <div class="d-flex flex-column gap-2">
+                        <h3>Ingridienser</h3>
+
+
+
+                        <div class="input-multi">
+                            <div class="input-multi-list ">
+                                    <div class="row my-2">
+                                        <div class="col-3">
+                                            <input asp-for="Drink.Recipe.Measurements[0].Amount" type="number" class="form-control input-multi-input" value="0" />
+                                        </div>
+                                        <div class="col-3">
+                                            <select asp-for="Drink.Recipe.Measurements[0].UnitId" class="form-select col-3 input-multi-input">
+                                                @foreach (var unit in Model.Units)
+                                                {
+                                                    <option value="unit.Id">@unit.Name</option>
+                                                }
+                                            </select>
+                                        </div>
+                                        <div class="col-6">
+                                            <select asp-for="Drink.Recipe.Measurements[0].IngridientId" class="form-select col-3 input-multi-input">
+                                                @foreach (var ingridient in Model.Ingridients)
+                                                {
+                                                    <option value="ingridient.Id">@ingridient.Name</option>
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+                            </div>
+                            
+                            
+                            <div class="text-primary mt-2 fs-3 text-center">
+                                    <button class="btn btn-primary rounded-circle input-multi-button-minus visually-hidden">
+                                        <i class="fa-solid fa-minus"></i>
+                                    </button>
+                                    <button class="btn btn-primary rounded-circle input-multi-button-plus">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
+                            </div>
+
+                            <template>
+                                <div class="row my-2">
+                                    <div class="col-3">
+                                        <input asp-for="Drink.Recipe.Measurements[0].Amount" type="number" class="form-control input-multi-input" value="0"/>
+                                    </div>
+                                    <div class="col-3">
+                                            <select asp-for="Drink.Recipe.Measurements[0].UnitId" class="form-select col-3 input-multi-input">
+                                                @foreach (var unit in Model.Units)
+                                                {
+                                                    <option value="unit.Id">@unit.Name</option>
+                                                }
+                                            </select>
+                                    </div>
+                                    <div class="col-6">
+                                            <select asp-for="Drink.Recipe.Measurements[0].IngridientId" class="form-select col-3 input-multi-input">
+                                                @foreach (var ingridient in Model.Ingridients)
+                                                {
+                                                    <option value="ingridient.Id">@ingridient.Name</option>
+                                                }
+                                            </select>
+                                    </div>
+                                </div>
+                                
+                            </template>
+                        
+                        </div>
+
+                        
+
+
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="d-flex flex-column">
+                        <div class="d-flex flex-column gap-2">
+                            <h3>Gör så här</h3>
+
+                                <div class="input-multi">
+                                    <div class="input-multi-list">
+                                        <div class="row my-2">
+                                            <div class="col-2 align-self-center">
+                                                <span class="fs-5">steg <span class="input-multi-counter">1</span></span>
+                                            </div>
+                                            <div class="col-10">
+                                                <textarea asp-for="Drink.Recipe.Instructions[0].Description" class="form-control input-multi-input" rows="3"></textarea>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+
+                                    <div class="text-primary mt-2 fs-3 text-center">
+                                        <button class="btn btn-primary rounded-circle input-multi-button-minus visually-hidden">
+                                            <i class="fa-solid fa-minus"></i>
+                                        </button>
+                                        <button class="btn btn-primary rounded-circle input-multi-button-plus">
+                                            <i class="fa-solid fa-plus"></i>
+                                        </button>
+                                    </div>
+
+                                    <template>
+                                        <div class="row my-2">
+                                            <div class="col-2 align-self-center">
+                                                <span class="fs-5">steg <span class="input-multi-counter"></span></span>
+                                            </div>
+                                            <div class="col-10">
+                                                <textarea asp-for="Drink.Recipe.Instructions[0].Description" class="form-control input-multi-input" rows="3"></textarea>
+                                            </div>
+                                        </div>
+                                    </template>
+
+                                </div>
+
+
+
+                        </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+    </form>
+</section>
+
+<script src="~/js/input-multi.js"></script>

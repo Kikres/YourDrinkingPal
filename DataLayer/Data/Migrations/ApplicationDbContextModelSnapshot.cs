@@ -34,20 +34,17 @@ namespace YourDrinkingPal.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("FlavourId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("GlassId")
+                    b.Property<int>("FlavourId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("RecepieId")
+                    b.Property<int>("RecipeId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("TagId")
+                    b.Property<int>("TagId")
                         .HasColumnType("int");
 
                     b.Property<string>("UrlSlug")
@@ -58,9 +55,7 @@ namespace YourDrinkingPal.Data.Migrations
 
                     b.HasIndex("FlavourId");
 
-                    b.HasIndex("GlassId");
-
-                    b.HasIndex("RecepieId");
+                    b.HasIndex("RecipeId");
 
                     b.HasIndex("TagId");
 
@@ -160,7 +155,7 @@ namespace YourDrinkingPal.Data.Migrations
                     b.Property<int?>("RecipeId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("UnitId")
+                    b.Property<int>("UnitId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -186,7 +181,12 @@ namespace YourDrinkingPal.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("GlassId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("GlassId");
 
                     b.ToTable("Recipe");
                 });
@@ -240,21 +240,6 @@ namespace YourDrinkingPal.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Unit");
-                });
-
-            modelBuilder.Entity("DrinkTool", b =>
-                {
-                    b.Property<int>("DrinksId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("EquipmentId")
-                        .HasColumnType("int");
-
-                    b.HasKey("DrinksId", "EquipmentId");
-
-                    b.HasIndex("EquipmentId");
-
-                    b.ToTable("DrinkTool");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -459,31 +444,44 @@ namespace YourDrinkingPal.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("RecipeTool", b =>
+                {
+                    b.Property<int>("EquipmentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RecipesId")
+                        .HasColumnType("int");
+
+                    b.HasKey("EquipmentId", "RecipesId");
+
+                    b.HasIndex("RecipesId");
+
+                    b.ToTable("RecipeTool");
+                });
+
             modelBuilder.Entity("DataLayer.Models.Domain.Drink", b =>
                 {
                     b.HasOne("DataLayer.Models.Domain.Flavour", "Flavour")
                         .WithMany("Drinks")
-                        .HasForeignKey("FlavourId");
+                        .HasForeignKey("FlavourId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("DataLayer.Models.Domain.Glass", "Glass")
-                        .WithMany("Drinks")
-                        .HasForeignKey("GlassId");
-
-                    b.HasOne("DataLayer.Models.Domain.Recipe", "Recepie")
+                    b.HasOne("DataLayer.Models.Domain.Recipe", "Recipe")
                         .WithMany()
-                        .HasForeignKey("RecepieId")
+                        .HasForeignKey("RecipeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("DataLayer.Models.Domain.Tag", "Tag")
                         .WithMany("Drinks")
-                        .HasForeignKey("TagId");
+                        .HasForeignKey("TagId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Flavour");
 
-                    b.Navigation("Glass");
-
-                    b.Navigation("Recepie");
+                    b.Navigation("Recipe");
 
                     b.Navigation("Tag");
                 });
@@ -509,26 +507,24 @@ namespace YourDrinkingPal.Data.Migrations
 
                     b.HasOne("DataLayer.Models.Domain.Unit", "Unit")
                         .WithMany("Measurements")
-                        .HasForeignKey("UnitId");
+                        .HasForeignKey("UnitId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Ingridient");
 
                     b.Navigation("Unit");
                 });
 
-            modelBuilder.Entity("DrinkTool", b =>
+            modelBuilder.Entity("DataLayer.Models.Domain.Recipe", b =>
                 {
-                    b.HasOne("DataLayer.Models.Domain.Drink", null)
-                        .WithMany()
-                        .HasForeignKey("DrinksId")
+                    b.HasOne("DataLayer.Models.Domain.Glass", "Glass")
+                        .WithMany("Recipes")
+                        .HasForeignKey("GlassId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DataLayer.Models.Domain.Tool", null)
-                        .WithMany()
-                        .HasForeignKey("EquipmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Glass");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -582,6 +578,21 @@ namespace YourDrinkingPal.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("RecipeTool", b =>
+                {
+                    b.HasOne("DataLayer.Models.Domain.Tool", null)
+                        .WithMany()
+                        .HasForeignKey("EquipmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DataLayer.Models.Domain.Recipe", null)
+                        .WithMany()
+                        .HasForeignKey("RecipesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("DataLayer.Models.Domain.Flavour", b =>
                 {
                     b.Navigation("Drinks");
@@ -589,7 +600,7 @@ namespace YourDrinkingPal.Data.Migrations
 
             modelBuilder.Entity("DataLayer.Models.Domain.Glass", b =>
                 {
-                    b.Navigation("Drinks");
+                    b.Navigation("Recipes");
                 });
 
             modelBuilder.Entity("DataLayer.Models.Domain.Ingridient", b =>
