@@ -5,7 +5,7 @@ using DataLayer.Models.QueryParams;
 using DataLayer.Models.Domain;
 using System.Linq;
 
-namespace Business_Layer.Services;
+namespace BusinessLayer.Services;
 
 public class ServiceGlass
 {

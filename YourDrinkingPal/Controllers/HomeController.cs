@@ -1,11 +1,11 @@
 ﻿using ApplicationLayer.Models;
 using ApplicationLayer.Models.Partial;
-using Business_Layer.Services;
+using BusinessLayer.Services;
 using DataLayer.Data;
 using DataLayer.Models.Domain;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
+using System.Text.Json;
+using System.Text;
 
 namespace ApplicationLayer.Controllers
 {
@@ -24,21 +24,21 @@ namespace ApplicationLayer.Controllers
         {
             //Seed();
 
-            var drinks = _serviceDrink.Take(7, true);
-            var featuredDrinksViewModel = new DrinksFeaturedViewModel
-            {
-                Title = "Omtyckta Drinkar",
-                Description = "Vi tycker att det ska vara lätt att hitta det man letar efter, inget tjafs! Med det i åtanke så har vi samlat de populäraste drinkarna på ett och samma ställe!",
-                Drinks = drinks
-            };
+            //var drinks = _serviceDrink.Take(7, true);
+            //var featuredDrinksViewModel = new DrinksFeaturedViewModel
+            //{
+            //    Title = "Omtyckta Drinkar",
+            //    Description = "Vi tycker att det ska vara lätt att hitta det man letar efter, inget tjafs! Med det i åtanke så har vi samlat de populäraste drinkarna på ett och samma ställe!",
+            //    Drinks = drinks
+            //};
 
-            var homeViewModel = new HomeViewModel
-            {
-                DrinksFeaturedViewModel = featuredDrinksViewModel,
-            };
+            //var homeViewModel = new HomeViewModel
+            //{
+            //    DrinksFeaturedViewModel = featuredDrinksViewModel,
+            //};
 
-            //return View();
-            return View(homeViewModel);
+            return View();
+            //return View(homeViewModel);
         }
 
         public IActionResult Privacy()
@@ -60,8 +60,8 @@ namespace ApplicationLayer.Controllers
             using StreamReader readerTwo = new(pathUnits);
             var json = reader.ReadToEnd();
             var jsonTwo = readerTwo.ReadToEnd();
-            List<dtoDrink> drinksDto = JsonConvert.DeserializeObject<List<dtoDrink>>(json);
-            List<dtoUnits> unitsDto = JsonConvert.DeserializeObject<List<dtoUnits>>(jsonTwo);
+            List<dtoDrink> drinksDto = Newtonsoft.Json.JsonConvert.DeserializeObject<List<dtoDrink>>(json);
+            List<dtoUnits> unitsDto = Newtonsoft.Json.JsonConvert.DeserializeObject<List<dtoUnits>>(jsonTwo);
 
             var drinks = new List<Drink>();
 
@@ -70,6 +70,8 @@ namespace ApplicationLayer.Controllers
                 if (_context.Drink.FirstOrDefault(o => o.Name == item.Name) != null) continue;
                 try
                 {
+                    Random rnd = new Random();
+                    var style = new Style();
                     var splittTools = item.Tools.Trim().ToLower().Split(", ");
                     List<Tool> tools = new List<Tool>();
                     foreach (var toolStr in splittTools)
@@ -202,11 +204,25 @@ namespace ApplicationLayer.Controllers
                         });
                     }
 
+                    var garnish = _context.Garnish.FirstOrDefault(o => o.Name == item.Garnish);
+                    if (garnish == null)
+                    {
+                        var newTag = new Garnish
+                        {
+                            Name = item.Garnish,
+                            Prompt = item.Garnish
+                        };
+
+                        _context.Garnish.Add(newTag);
+                        garnish = newTag;
+                    }
+                    _context.SaveChanges();
+                    style.GarnishId = garnish.Id;
+
                     var recipe = new Recipe
                     {
                         Measurements = measurements,
                         Instructions = instructions,
-                        Garnish = item.Garnish
                     };
 
                     var tag = _context.Tag.FirstOrDefault(o => o.Name == item.Tag);
@@ -241,6 +257,7 @@ namespace ApplicationLayer.Controllers
                         var newglass = new Glass
                         {
                             Name = item.Glass,
+                            Prompt = item.Glass,
                         };
 
                         _context.Glass.Add(newglass);
@@ -248,18 +265,31 @@ namespace ApplicationLayer.Controllers
                     }
                     _context.SaveChanges();
 
+                    style.GlassId = glass.Id;
+
+                    var colorList = _context.Color.ToList();
+                    var rndColor = colorList[rnd.Next(colorList.Count)];
+                    style.ColorId = rndColor.Id;
+
+                    var transparencyList = _context.Transparency.ToList();
+                    var rndTransparency = transparencyList[rnd.Next(transparencyList.Count)];
+                    style.TransparencyId = rndTransparency.Id;
+
+                    style.HasIce = true;
+
+                    recipe.Equipment = tools;
                     var drink = new Drink
                     {
                         Name = item.Name,
                         UrlSlug = item.Name.ToLower().Trim().Replace(" ", "-"),
+                        IsPublished = true,
                         Description = item.Description,
                         Tag = tag,
                         Flavour = flavour,
-                        Recipe = recipe
+                        Recipe = recipe,
+                        Style = style,
+                        Creator = _context.ApplicationUser.First(),
                     };
-
-                    drink.Recipe.Glass = glass;
-                    drink.Recipe.Equipment = tools;
 
                     _context.Drink.Add(drink);
                     _context.SaveChanges();

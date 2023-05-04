@@ -17,6 +17,8 @@ public interface IRepositoryDrink
 
     Drink? GetById(int id, QueryParamDrink queryParamDrink);
 
+    Drink? GetByImageId(int imageId, QueryParamDrink queryParamDrink);
+
     Drink? GetByUrlSlug(string urlSlug, QueryParamDrink queryParamDrink);
 
     int Update(Drink drink);
@@ -35,6 +37,8 @@ public class RepositoryDrink : IRepositoryDrink
     public List<Drink> GetAll(QueryParamDrink queryParamDrink) => IncludeParameters(queryParamDrink, _context.Drink).ToList();
 
     public Drink? GetById(int id, QueryParamDrink queryParamDrink) => IncludeParameters(queryParamDrink, _context.Drink).FirstOrDefault(o => o.Id == id);
+
+    public Drink? GetByImageId(int uploadedImageId, QueryParamDrink queryParamDrink) => IncludeParameters(queryParamDrink, _context.Drink).FirstOrDefault(o => o.UploadedImageId == uploadedImageId);
 
     public Drink? GetByUrlSlug(string urlSlug, QueryParamDrink queryParamDrink) => IncludeParameters(queryParamDrink, _context.Drink).FirstOrDefault(o => o.UrlSlug == urlSlug);
 
@@ -67,9 +71,10 @@ public class RepositoryDrink : IRepositoryDrink
     private IQueryable<Drink> IncludeParameters(QueryParamDrink queryParamDrink, DbSet<Drink> context)
     {
         var query = context.AsQueryable();
+        if (queryParamDrink.Image != null) query = query.Include(o => o.UploadedImage);
         if (queryParamDrink.Tag != null) query = query.Include(o => o.Tag);
         if (queryParamDrink.Flavour != null) query = query.Include(o => o.Flavour);
-        if (queryParamDrink.Recepie != null) query = query.Include(o => o.Recipe);
+        if (queryParamDrink.Style != null) query = query.Include(o => o.Style);
         return query;
     }
 }

@@ -2,107 +2,79 @@
 @model DrinkViewModel
 
 @{
-    ViewData["Title"] = "Home Page";
-    DrinkDto drink = Model.Drink;
+    ViewData["Title"] = "Detaljer";
 }
 
-<section class="pt-0">
-    <div class="d-flex align-items-center">
-        <div class="col-6">
-            <img src="https://source.unsplash.com/u8Jn2rzYIps/900x900" class="card-img" alt="...">
-        </div>
-        <div class="col-6 card-body">
-            <div class="d-flex align-items-center justify-content-between">
-                <div class="align-self-baseline">
-                    <h5 class="card-title text-black fs-2">@drink.Name</h5>
-                    <span class="card-title text-primary fs-4">@drink.Tag.Name | @drink.Flavour.Name</span>
-                </div>
-                <div>
-                    <span class="card-text text-muted fs-6 mx-2">@@Kanoknartganlaya</span>
-                    <img src="https://source.unsplash.com/u8Jn2rzYIps/900x900" class="img-profile-thumb rounded-circle " alt="...">
-                </div>
-            
-            </div>
-            <div class="my-5">
-                <p class="fs-5">
-                    @drink.Description
-                </p>
-            </div>
-            <div class="">
-                <button class=" fs-3 btn h-100">
-                    <i class="fa-regular fa-heart"></i>
-                </button>
-            </div>
-        </div>
-    </div>
-    <div class="d-flex flex-column Justify-items-center my-5">
-        <div class="row my-3">
-            <div class="d-flex align-items-center justify-content-center gap-3 text-primary fs-3 col-3">
-                <i class="fa-solid fa-circle-minus"></i>
-                <div class="">
-                    <span class="me-2">1</span>
-                    <span>DRINK</span>
-                </div>
-                <i class="fa-solid fa-circle-plus"></i>
-            </div>
-            <div class="d-flex align-items-center gap-2 col-3">
-                <span class="fs-3 text-primary">Glas: </span>
-                <span class="fs-4">@drink.Recipe.Glass.Name</span>
-            </div>
-            <div class="d-flex align-items-center gap-2 col-6">
-                <span class="fs-3 text-primary">Redskap: </span>
-                @foreach (var util in drink.Recipe.Equipment)
-                {
-                
-                    <span class="fs-4">@util.Name</span>
-                    
-                }
-            </div>
-        </div>
+<section class="container mx-auto bg-white dark:bg-gray-900">
+    <div class="py-8 px-4 mx-auto md:max-w-6xl lg:py-16">
+        
+        <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Detaljer</h2>
 
-
-        <div class="d-flex flex-column my-4 gap-5">
-            <div class="row">
-                <div class="col-6">
-                    <div class="d-flex flex-column gap-2">
-                        <h3 class="fs-4">Ingridienser</h3>
-                        @foreach (var measurement in drink.Recipe.Measurements)
+            <div class="gap-4 sm:grid sm:grid-cols-2 xl:grid-cols-3 sm:gap-6 sm:mb-2">
+                <div class="mb-4 space-y-4 xl:col-span-2 self-center">
+                    <img class="w-auto rounded-lg" src="@Model.Drink.UploadedImage.ImageUrl" alt="image description">
+                </div>
+                <div class="mb-4 space-y-4 xl:col-span-2 self-center">
+                    <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">@Model.Drink.Name</h2>
+                    <p class="mb-4 text-xl tracking-tight font-extrabold text-purple-600 dark:text-white">@Model.Drink.Tag?.Name | @Model.Drink.Flavour?.Name</p>
+                    <p class="my-4">@Model.Drink.Description</p>
+                    <i class="fa-regular fa-heart text-2xl"></i>
+                </div>
+                <div class="mb-4 space-y-4 input-multi-container">
+                    <label for="add-guests" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Ingridienser</label>
+                    <div class="input-multi-list flex-column space-y-2">
+                        @foreach (var ing in Model.Drink.Recipe.Measurements)
                         {
-                            <div class="row">
-                                <div class="col-3">
-                                    <p class="fs-5">@(measurement.Amount != 0 ? measurement.Amount : "-") @measurement.Unit.Name</p>
+                            <div class="flex">
+                                <div class="w-12 ">
+                                    <p class="tracking-tight font-bold text-purple-600 dark:text-white">@ing.Amount</p>
                                 </div>
-                                <div class="col-9">
-                                    <p class="fs-5">@measurement.Ingridient.Name</p>
+                                <div class="w-24">
+                                <p class="tracking-tight font-bold dark:text-white">@ing.Unit.Name</p>
                                 </div>
+                                <div class="w-60">
+                                    <p class="tracking-tight dark:text-white">@ing.Ingridient.Name</p>
+                                </div>
+                            </div>
+                        }
+                    </div>           
+                </div>
+                <div class="mb-4 space-y-4 input-multi-container">
+                    <label for="add-guests" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Instruktioner</label>
+                    <div class="input-multi-list flex-column space-y-2">
+                        @for (int i = 0; i < Model.Drink.Recipe.Instructions.Count; i++)
+                        {
+                            var ins = Model.Drink.Recipe.Instructions[i];
+                            <div class="flex">
+                                <div class="w-12 ">
+                                    <p class="tracking-tight font-bold text-purple-600 dark:text-white">@(i+1)</p>
+                                </div>
+                                <div class="w-auto">
+                                    <p class="tracking-tight dark:text-white">@ins.Description</p>
+                                </div>
+                            
                             </div>
                         }
                     </div>
                 </div>
-                <div class="col-6">
-                    <div class="d-flex flex-column gap-2">
-                        <h3 class="fs-4">Gör så här</h3>
-                        <div class="d-flex flex-column gap-2">
-                            @for (int i = 0; i < drink.Recipe.Instructions.Count; i++)
+
+                <div class="mb-4 space-y-4 input-multi-container">
+                    <label for="add-guests" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Utrustning</label>
+                    <div class="input-multi-list flex-column space-y-2">
+                        <div class="flex">
+                            @foreach (var tool in Model.Drink.Recipe.Equipment)
                             {
-                                var instruction = drink.Recipe.Instructions[i];
-                                <p class="fs-5">@instruction.Position. @instruction.Description</p>
+                                <p class="tracking-tight dark:text-white">@tool.Name &nbsp;</p>
                             }
+
                         </div>
                     </div>
                 </div>
-                    
             </div>
-            <div class="row">
-                <div class="col-6">
-                    <div class="d-flex flex-column gap-2">
-                        <h3 class="fs-4">Garnering</h3>
-                        <p class="fs-5">@drink.Recipe.Garnish</p>
-                    </div>
-                </div>
+            <div class="text-center">
+                <button type="submit" class="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">
+                    Publicera
+                <button>
             </div>
-        </div>
-      
     </div>
 </section>
-

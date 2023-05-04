@@ -9,6 +9,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\js\DrinkCreate.js" />
+    <Content Remove="wwwroot\js\DrinkPreview.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\js\DrinkPreview.js" />
+    <None Include="wwwroot\js\DrinkCreate.js" />
     <None Include="wwwroot\js\site.js" />
     <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map" />
     <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css.map" />
@@ -72,6 +79,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\API\Data\" />
+    <Folder Include="Areas\API\Models\" />
+    <Folder Include="Areas\API\Views\" />
+    <Folder Include="Areas\Identity\Data\" />
     <Folder Include="Areas\Identity\Models\" />
     <Folder Include="Areas\Identity\Views\" />
   </ItemGroup>

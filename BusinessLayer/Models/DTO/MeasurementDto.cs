@@ -4,9 +4,9 @@
     {
         public int Id { get; set; }
         public int IngridientId { get; set; }
-        public IngridientDto Ingridient { get; set; } = new IngridientDto();
+        public IngridientDto Ingridient { get; set; }
         public int UnitId { get; set; }
-        public UnitDto? Unit { get; set; } = new UnitDto(); 
+        public UnitDto? Unit { get; set; }
         public decimal? Amount { get; set; }
     }
 }

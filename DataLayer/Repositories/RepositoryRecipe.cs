@@ -65,7 +65,6 @@ public class RepositoryRecipe : IRepositoryRecipe
         var query = context.AsQueryable();
         if (queryParamRecipe.Measurements != null) query = query.Include(o => o.Measurements);
         if (queryParamRecipe.Instructions != null) query = query.Include(o => o.Instructions);
-        if (queryParamRecipe.Glass != null) query = query.Include(o => o.Glass);
         if (queryParamRecipe.Equipment != null) query = query.Include(o => o.Equipment);
         return query;
     }

@@ -4,13 +4,13 @@ namespace DataLayer.Models.QueryParams;
 
 public class QueryParamGlass
 {
-    public bool? Recipes { get; set; }
+    public bool? Styles { get; set; }
 
     public QueryParamGlass(bool includeAll)
     {
         if (includeAll)
         {
-            Recipes = true;
+            Styles = true;
         }
     }
 }

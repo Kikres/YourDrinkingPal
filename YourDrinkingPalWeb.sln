@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApplicationLayer", "YourDri
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataLayer", "DataLayer\DataLayer.csproj", "{F2CAF0A6-3E87-486A-8C55-EDE72FBC3437}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessLayer", "BusinessLayer\BusinessLayer.csproj", "{86721854-F730-4FC0-8F93-CFE2BCFBB711}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessLayer", "BusinessLayer\BusinessLayer.csproj", "{86721854-F730-4FC0-8F93-CFE2BCFBB711}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

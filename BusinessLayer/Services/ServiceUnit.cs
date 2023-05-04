@@ -5,7 +5,7 @@ using DataLayer.Models.QueryParams;
 using DataLayer.Models.Domain;
 using System.Linq;
 
-namespace Business_Layer.Services;
+namespace BusinessLayer.Services;
 
 public class ServiceUnit
 {
@@ -23,14 +23,14 @@ public class ServiceUnit
 
     public List<UnitDto> Take(int amount)
     {
-        var flavours = _repositoryUnit.GetAll(new QueryParamUnit(true)).Take(amount).ToList();
-        return _mapper.Map<List<Unit>, List<UnitDto>>(flavours);
+        var objs = _repositoryUnit.GetAll(new QueryParamUnit(true)).Take(amount).ToList();
+        return _mapper.Map<List<Unit>, List<UnitDto>>(objs);
     }
 
     public UnitDto? GetById(int id)
     {
-        var drink = _repositoryUnit.GetById(id, new QueryParamUnit(true));
-        return _mapper.Map<Unit?, UnitDto>(drink);
+        var obj = _repositoryUnit.GetById(id, new QueryParamUnit(true));
+        return _mapper.Map<Unit?, UnitDto>(obj);
     }
 
     //public ClientDto GetByName(string name) => _mapper.Map<Client?, ClientDto>(_repositoryClient.GetByName(name, new QueryParamClient()));
