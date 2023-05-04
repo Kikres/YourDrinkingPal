@@ -1,5 +1,5 @@
-﻿using BusinessLayer.Models.DTO;
-using BusinessLayer.Services;
+﻿using BusinessLayer;
+using BusinessLayer.Models.DTO;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ApplicationLayer.Areas.API.Controllers
@@ -8,11 +8,11 @@ namespace ApplicationLayer.Areas.API.Controllers
     [ApiController]
     public class GeneratedImageController : ControllerBase
     {
-        private readonly ServiceGeneratedImage _serviceGeneratedImage;
+        private readonly Service _service;
 
-        public GeneratedImageController(ServiceGeneratedImage serviceGeneratedImage)
+        public GeneratedImageController(Service service)
         {
-            _serviceGeneratedImage = serviceGeneratedImage;
+            _service = service;
         }
 
         [HttpPost]
@@ -20,7 +20,7 @@ namespace ApplicationLayer.Areas.API.Controllers
         {
             if (!ModelState.IsValid) return BadRequest();
 
-            await _serviceGeneratedImage.ProcessImage(dto);
+            await _service.GeneratedImage.ProcessImage(dto);
 
             return Ok();
         }
@@ -28,7 +28,7 @@ namespace ApplicationLayer.Areas.API.Controllers
         [HttpGet("{id}")]
         public IActionResult GetByOriginatingMessageId(int id)
         {
-            var image = _serviceGeneratedImage.GetByDrinkId(id);
+            var image = _service.GeneratedImage.GetByDrinkId(id);
             if (image == null || !image.IsDone) return BadRequest();
             return Ok(image);
         }

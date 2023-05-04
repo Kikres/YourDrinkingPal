@@ -3,40 +3,39 @@
 @model DrinkPreviewViewModel
 
 @{
-    ViewData["Title"] = "Home Page";
-    var host = configuration["Host"];
+    ViewData["Title"] = "Skapa recept - Granska";
 }
 
 <section class="confirm-container container mx-auto bg-white dark:bg-gray-900" id="@Model.Drink.Id">
     <div class="py-8 px-4 mx-auto md:max-w-6xl lg:py-16">
         <form asp-controller="drink" asp-action="preview" method="post">
-            <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Skapa en ny drink - Granska</h2>
+            <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Skapa recept - Granska</h2>
 
             <div class="gap-4 sm:grid sm:grid-cols-2 xl:grid-cols-3 sm:gap-6 sm:mb-2">
                 <div class="mb-4 space-y-4 xl:col-span-2 self-center relative ">
                     <input asp-for="DrinkPublishDto.DrinkId" value="@Model.Drink.Id" class="hidden"/>
                     <div class="confirm-blur grid grid-cols-2 gap-2 blur">
                         <div class="confirm-input">
-                            <input type="radio" asp-for="DrinkPublishDto.ImageId" id="1" value="" class="hidden peer" required>
+                            <input disabled type="radio" asp-for="DrinkPublishDto.ImageId" id="0" value="" class="hidden peer" required>
+                            <label for="0" class="inline-flex items-center justify-between w-full bg-white border-2 border-gray-200 rounded-lg cursor-pointer peer-checked:border-blue-600">
+                                <img class="h-auto max-w-full rounded-lg" src="https://source.unsplash.com/u8Jn2rzYIps/900x900" alt="">
+                            </label>
+                        </div>
+                        <div class="confirm-input">
+                            <input disabled type="radio" asp-for="DrinkPublishDto.ImageId" id="1" value="" class="hidden peer" required>
                             <label for="1" class="inline-flex items-center justify-between w-full bg-white border-2 border-gray-200 rounded-lg cursor-pointer peer-checked:border-blue-600">
                                 <img class="h-auto max-w-full rounded-lg" src="https://source.unsplash.com/u8Jn2rzYIps/900x900" alt="">
                             </label>
                         </div>
                         <div class="confirm-input">
-                            <input type="radio" asp-for="DrinkPublishDto.ImageId" id="2" value="" class="hidden peer" required>
+                            <input disabled type="radio" asp-for="DrinkPublishDto.ImageId" id="2" value="" class="hidden peer" required>
                             <label for="2" class="inline-flex items-center justify-between w-full bg-white border-2 border-gray-200 rounded-lg cursor-pointer peer-checked:border-blue-600">
                                 <img class="h-auto max-w-full rounded-lg" src="https://source.unsplash.com/u8Jn2rzYIps/900x900" alt="">
                             </label>
                         </div>
                         <div class="confirm-input">
-                            <input type="radio" asp-for="DrinkPublishDto.ImageId" id="3" value="" class="hidden peer" required>
+                            <input disabled type="radio" asp-for="DrinkPublishDto.ImageId" id="3" value="" class="hidden peer" required>
                             <label for="3" class="inline-flex items-center justify-between w-full bg-white border-2 border-gray-200 rounded-lg cursor-pointer peer-checked:border-blue-600">
-                                <img class="h-auto max-w-full rounded-lg" src="https://source.unsplash.com/u8Jn2rzYIps/900x900" alt="">
-                            </label>
-                        </div>
-                        <div class="confirm-input">
-                            <input type="radio" asp-for="DrinkPublishDto.ImageId" id="4" value="" class="hidden peer" required>
-                            <label for="4" class="inline-flex items-center justify-between w-full bg-white border-2 border-gray-200 rounded-lg cursor-pointer peer-checked:border-blue-600">
                                 <img class="h-auto max-w-full rounded-lg" src="https://source.unsplash.com/u8Jn2rzYIps/900x900" alt="">
                             </label>
                         </div>
@@ -113,4 +112,46 @@
     </div>
 </section>
 
-<script src="~/js/DrinkPreview.js"></script>
+<script>
+    const id = document.querySelector(".confirm-container").id;
+    const spinner = document.querySelector(".confirm-spinner");
+    const blurContainer = document.querySelector(".confirm-blur");
+    const buttonSubmit = document.querySelector(".confirm-submit");
+    const inputs = document.querySelectorAll(".confirm-input");
+    
+    function Startup() {
+        fetch(`https://localhost:7132/api/GeneratedImage/${id}`)
+            .then((resp) => resp.json())
+            .then((data) => {
+                console.log(data);
+                for (let index = 0; index < data.variations.length; index++) {
+                    const element = data.variations[index];
+                    var confirmInput = inputs[index];
+                    console.log(confirmInput)
+
+                    const templateInput = confirmInput.querySelector("input");
+                    templateInput.disabled = false;
+                    const templateImage = confirmInput.querySelector("img");
+
+                    templateImage.src = element.imageUrl;
+                    templateInput.value = element.id;
+
+                    templateImage.addEventListener("click", (event) => {
+                        buttonSubmit.textContent = "publicera";
+                        buttonSubmit.disabled = false;
+                        console.log(event.target)
+                    });
+                }
+
+                spinner.remove();
+                blurContainer.classList.remove("blur");
+            })
+            .catch((error) => {
+                console.log("polling");
+                const timeout = 10 * 1000;
+                setTimeout(Startup, timeout);
+            });
+    }
+
+    Startup();
+</script>

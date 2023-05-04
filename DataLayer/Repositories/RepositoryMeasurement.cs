@@ -37,27 +37,43 @@ public class RepositoryMeasurement : IRepositoryMeasurement
     //Manipulate
     public Measurement Create(Measurement measurement)
     {
-        _context.Measurement.Add(measurement);
-        _context.SaveChanges();
+        try
+        {
+            _context.Measurement.Add(measurement);
+            _context.SaveChanges();
+        }
+        catch (Exception e) { throw new DbUpdateException(e.Message); }
         return measurement;
     }
 
     public int Delete(Measurement measurement)
     {
-        _context.Measurement.Remove(measurement);
-        return _context.SaveChanges();
+        try
+        {
+            _context.Measurement.Remove(measurement);
+            return _context.SaveChanges();
+        }
+        catch (Exception e) { throw new DbUpdateException(e.Message); }
     }
 
     public int Delete(IEnumerable<Measurement> measurements)
     {
-        foreach (Measurement measurement in measurements) _context.Measurement.Remove(measurement);
-        return _context.SaveChanges();
+        try
+        {
+            foreach (Measurement measurement in measurements) _context.Measurement.Remove(measurement);
+            return _context.SaveChanges();
+        }
+        catch (Exception e) { throw new DbUpdateException(e.Message); }
     }
 
     public int Update(Measurement measurement)
     {
-        _context.Measurement.Update(measurement);
-        return _context.SaveChanges();
+        try
+        {
+            _context.Measurement.Update(measurement);
+            return _context.SaveChanges();
+        }
+        catch (Exception e) { throw new DbUpdateException(e.Message); }
     }
 
     private IQueryable<Measurement> IncludeParameters(QueryParamMeasurement queryParamMeasurement, DbSet<Measurement> context)

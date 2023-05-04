@@ -37,27 +37,43 @@ public class RepositoryTool : IRepositoryTool
     //Manipulate
     public Tool Create(Tool tool)
     {
-        _context.Tool.Add(tool);
-        _context.SaveChanges();
+        try
+        {
+            _context.Tool.Add(tool);
+            _context.SaveChanges();
+        }
+        catch (Exception e) { throw new DbUpdateException(e.Message); }
         return tool;
     }
 
     public int Delete(Tool tool)
     {
-        _context.Tool.Remove(tool);
-        return _context.SaveChanges();
+        try
+        {
+            _context.Tool.Remove(tool);
+            return _context.SaveChanges();
+        }
+        catch (Exception e) { throw new DbUpdateException(e.Message); }
     }
 
     public int Delete(IEnumerable<Tool> tools)
     {
-        foreach (Tool tool in tools) _context.Tool.Remove(tool);
-        return _context.SaveChanges();
+        try
+        {
+            foreach (Tool tool in tools) _context.Tool.Remove(tool);
+            return _context.SaveChanges();
+        }
+        catch (Exception e) { throw new DbUpdateException(e.Message); }
     }
 
     public int Update(Tool tool)
     {
-        _context.Tool.Update(tool);
-        return _context.SaveChanges();
+        try
+        {
+            _context.Tool.Update(tool);
+            return _context.SaveChanges();
+        }
+        catch (Exception e) { throw new DbUpdateException(e.Message); }
     }
 
     private IQueryable<Tool> IncludeParameters(QueryParamTool queryParamTool, DbSet<Tool> context)

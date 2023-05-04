@@ -1,5 +1,6 @@
 ﻿using DataLayer.Data;
 using DataLayer.Models.Domain;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataLayer.Repositories;
 
@@ -39,27 +40,42 @@ public class RepositoryUploadedImage : IRepositoryUploadedImage
     //Manipulate
     public UploadedImage Create(UploadedImage UploadedImage)
     {
-        _context.UploadedImage.Add(UploadedImage);
-        _context.SaveChanges();
+        try
+        {
+            _context.UploadedImage.Add(UploadedImage);
+            _context.SaveChanges();
+        }
+        catch (Exception e) { throw new DbUpdateException(e.Message); }
         return UploadedImage;
     }
 
     public int Delete(UploadedImage UploadedImage)
     {
-        _context.UploadedImage.Remove(UploadedImage);
-        return _context.SaveChanges();
+        try
+        {
+            _context.UploadedImage.Remove(UploadedImage);
+            return _context.SaveChanges();
+        }
+        catch (Exception e) { throw new DbUpdateException(e.Message); }
     }
 
     public int Delete(IEnumerable<UploadedImage> UploadedImages)
     {
-        foreach (UploadedImage UploadedImage in UploadedImages) _context.UploadedImage.Remove(UploadedImage);
-        return _context.SaveChanges();
+        try
+        {
+            foreach (UploadedImage UploadedImage in UploadedImages) _context.UploadedImage.Remove(UploadedImage);
+            return _context.SaveChanges();
+        }
+        catch (Exception e) { throw new DbUpdateException(e.Message); }
     }
 
     public int Update(UploadedImage UploadedImage)
     {
-        _context.UploadedImage.Attach(UploadedImage);
-        _context.UploadedImage.Update(UploadedImage);
-        return _context.SaveChanges();
+        try
+        {
+            _context.UploadedImage.Update(UploadedImage);
+            return _context.SaveChanges();
+        }
+        catch (Exception e) { throw new DbUpdateException(e.Message); }
     }
 }

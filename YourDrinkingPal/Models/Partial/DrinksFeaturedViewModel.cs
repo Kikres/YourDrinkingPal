@@ -2,7 +2,7 @@ using BusinessLayer.Models.DTO;
 
 namespace ApplicationLayer.Models.Partial
 {
-    public class DrinksFeaturedViewModel
+    public class FeaturedDrinksViewModel
     {
         public string Title { get; set; }
         public string Description { get; set; }

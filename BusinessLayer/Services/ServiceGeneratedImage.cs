@@ -7,34 +7,30 @@ using System.Net;
 using System.Drawing;
 using BusinessLayer.Services.CommonServices;
 using Microsoft.Azure.CognitiveServices.Vision.ComputerVision.Models;
+using DataLayer;
 
 namespace BusinessLayer.Services;
 
 public class ServiceGeneratedImage
 {
     private readonly IMapper _mapper;
-    private readonly IRepositoryGeneratedImage _repositoryGeneratedImage;
-    private readonly IRepositoryUploadedImage repositoryUploadedImage;
-    private readonly IRepositoryStyle _repositoryStyle;
+    private readonly IContext _context;
     private readonly CommonServiceComputerVision _commonServiceComputerVision;
     private readonly CommonServiceMidjourney _commonServiceMidjourney;
-
     private readonly CommonServiceBlobStorage _commonServiceBlobStorage;
 
-    public ServiceGeneratedImage(IMapper mapper, IRepositoryGeneratedImage repositoryGeneratedImage, CommonServiceBlobStorage commonServiceBlobStorage, CommonServiceComputerVision commonServiceComputerVision, IRepositoryStyle repositoryStyle, CommonServiceMidjourney commonServiceMidjourney, IRepositoryUploadedImage repositoryUploadedImage)
+    public ServiceGeneratedImage(IMapper mapper, CommonServiceBlobStorage commonServiceBlobStorage, CommonServiceComputerVision commonServiceComputerVision, CommonServiceMidjourney commonServiceMidjourney, IContext context)
     {
         _mapper = mapper;
-        _repositoryGeneratedImage = repositoryGeneratedImage;
         _commonServiceBlobStorage = commonServiceBlobStorage;
         _commonServiceComputerVision = commonServiceComputerVision;
-        _repositoryStyle = repositoryStyle;
         _commonServiceMidjourney = commonServiceMidjourney;
-        this.repositoryUploadedImage = repositoryUploadedImage;
+        _context = context;
     }
 
     public async Task<GeneratedImageDto> ProcessImage(MidjourneyDto dto)
     {
-        var generatedImage = _repositoryGeneratedImage.GetByOriginatingMessageId(dto.OriginatingMessageId, new QueryParamGeneratedImage(true));
+        var generatedImage = _context.GeneratedImage.GetByOriginatingMessageId(dto.OriginatingMessageId, new QueryParamGeneratedImage(true));
         if (generatedImage == null) return null;
 
         generatedImage.OriginalUrl = dto.ImageUrl;
@@ -62,7 +58,7 @@ public class ServiceGeneratedImage
          };
 
         //Inspect
-        var style = _repositoryStyle.GetById(generatedImage.Drink.StyleId, new QueryParamStyle(true));
+        var style = _context.Style.GetById(generatedImage.Drink.StyleId, new QueryParamStyle(true));
         var countInvalid = 0;
         foreach (var variation in variations)
         {
@@ -95,7 +91,7 @@ public class ServiceGeneratedImage
 
             //if (containsGlass)
             //{
-            repositoryUploadedImage.Create(variation);
+            _context.UploadedImage.Create(variation);
             generatedImage.Variations.Add(variation);
             //}
             //else
@@ -118,27 +114,27 @@ public class ServiceGeneratedImage
             generatedImage.DoneAt = DateTime.Now;
         }
 
-        _repositoryGeneratedImage.Update(generatedImage);
+        _context.GeneratedImage.Update(generatedImage);
 
         return _mapper.Map<GeneratedImage, GeneratedImageDto>(generatedImage);
     }
 
     //Fetch
-    public GeneratedImageDto GetByOriginatingMessageId(string id) => _mapper.Map<GeneratedImage, GeneratedImageDto>(_repositoryGeneratedImage.GetByOriginatingMessageId(id, new QueryParamGeneratedImage(true)));
+    public GeneratedImageDto GetByOriginatingMessageId(string id) => _mapper.Map<GeneratedImage, GeneratedImageDto>(_context.GeneratedImage.GetByOriginatingMessageId(id, new QueryParamGeneratedImage(true)));
 
-    public GeneratedImageDto GetByDrinkId(int id) => _mapper.Map<GeneratedImage, GeneratedImageDto>(_repositoryGeneratedImage.GetByDrinkId(id, new QueryParamGeneratedImage(true)));
+    public GeneratedImageDto GetByDrinkId(int id) => _mapper.Map<GeneratedImage, GeneratedImageDto>(_context.GeneratedImage.GetByDrinkId(id, new QueryParamGeneratedImage(true)));
 
-    public List<GeneratedImageDto> GetAll() => _mapper.Map<List<GeneratedImage>, List<GeneratedImageDto>>(_repositoryGeneratedImage.GetAll(new QueryParamGeneratedImage(false)));
+    public List<GeneratedImageDto> GetAll() => _mapper.Map<List<GeneratedImage>, List<GeneratedImageDto>>(_context.GeneratedImage.GetAll(new QueryParamGeneratedImage(false)));
 
     public List<GeneratedImageDto> Take(int amount)
     {
-        var generatedImage = _repositoryGeneratedImage.GetAll(new QueryParamGeneratedImage(true)).Take(amount).ToList();
+        var generatedImage = _context.GeneratedImage.GetAll(new QueryParamGeneratedImage(true)).Take(amount).ToList();
         return _mapper.Map<List<GeneratedImage>, List<GeneratedImageDto>>(generatedImage);
     }
 
     public GeneratedImageDto GetById(int id)
     {
-        var generatedImage = _repositoryGeneratedImage.GetById(id, new QueryParamGeneratedImage(true));
+        var generatedImage = _context.GeneratedImage.GetById(id, new QueryParamGeneratedImage(true));
         return _mapper.Map<GeneratedImage, GeneratedImageDto>(generatedImage);
     }
 }

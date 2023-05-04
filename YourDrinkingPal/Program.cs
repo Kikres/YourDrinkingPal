@@ -1,6 +1,8 @@
+using BusinessLayer;
 using BusinessLayer.Data;
 using BusinessLayer.Services;
 using BusinessLayer.Services.CommonServices;
+using DataLayer;
 using DataLayer.Data;
 using DataLayer.Models.Domain;
 using DataLayer.Repositories;
@@ -48,6 +50,7 @@ namespace ApplicationLayer
             builder.Services.AddScoped<IRepositoryTransparency, RepositoryTransparency>();
             builder.Services.AddScoped<IRepositoryUnit, RepositoryUnit>();
             builder.Services.AddScoped<IRepositoryGeneratedImage, RepositoryGeneratedImage>();
+            builder.Services.AddScoped<IContext, Context>();
 
             //INJECTION SERVICE
             builder.Services.AddScoped<ServiceColor>();
@@ -66,6 +69,7 @@ namespace ApplicationLayer
             builder.Services.AddScoped<ServiceTransparency>();
             builder.Services.AddScoped<ServiceUnit>();
             builder.Services.AddScoped<ServiceGeneratedImage>();
+            builder.Services.AddScoped<Service>();
 
             //INJECTION COMMON SERVICE
             builder.Services.AddScoped<CommonServiceMidjourney>();

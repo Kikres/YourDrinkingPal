@@ -1,10 +1,10 @@
 ﻿@model HomeViewModel
 
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Hem";
 }
 
-@*<partial name="Navigation" />*@
-@*<partial name="Hero" />
-<partial name="DrinkFeatured" for="DrinksFeaturedViewModel" />*@
-@*<partial name="FeaturedDrinksTwo" />*@
+<section class="container py-8 lg:py-16 py-8 px-4 mx-auto md:max-w-6xl lg:py-16">
+    <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Alla recept</h2>
+    <partial name="_DrinkCardGrid" for="@Model.Drinks"/>
+</section>

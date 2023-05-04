@@ -30,26 +30,6 @@ namespace DataLayer
 
     public class Context : IContext
     {
-        public Context(ApplicationDbContext context)
-        {
-            Color = new RepositoryColor(context);
-            Drink = new RepositoryDrink(context);
-            Flavour = new RepositoryFlavour(context);
-            Garnish = new RepositoryGarnish(context);
-            GeneratedImage = new RepositoryGeneratedImage(context);
-            Glass = new RepositoryGlass(context);
-            Ingridient = new RepositoryIngridient(context);
-            Instruction = new RepositoryInstruction(context);
-            Measurement = new RepositoryMeasurement(context);
-            Recipe = new RepositoryRecipe(context);
-            Style = new RepositoryStyle(context);
-            Tag = new RepositoryTag(context);
-            Tool = new RepositoryTool(context);
-            Transparency = new RepositoryTransparency(context);
-            Unit = new RepositoryUnit(context);
-            UploadedImage = new RepositoryUploadedImage(context);
-        }
-
         public IRepositoryColor Color { get; }
         public IRepositoryDrink Drink { get; }
         public IRepositoryFlavour Flavour { get; }
@@ -66,5 +46,25 @@ namespace DataLayer
         public IRepositoryTransparency Transparency { get; }
         public IRepositoryUnit Unit { get; }
         public IRepositoryUploadedImage UploadedImage { get; }
+
+        public Context(IRepositoryUploadedImage uploadedImage, IRepositoryColor color, IRepositoryDrink drink, IRepositoryFlavour flavour, IRepositoryGarnish garnish, IRepositoryGeneratedImage generatedImage, IRepositoryGlass glass, IRepositoryIngridient ingridient, IRepositoryInstruction instruction, IRepositoryMeasurement measurement, IRepositoryRecipe recipe, IRepositoryStyle style, IRepositoryTag tag, IRepositoryTool tool, IRepositoryTransparency transparency, IRepositoryUnit unit)
+        {
+            UploadedImage = uploadedImage;
+            Color = color;
+            Drink = drink;
+            Flavour = flavour;
+            Garnish = garnish;
+            GeneratedImage = generatedImage;
+            Glass = glass;
+            Ingridient = ingridient;
+            Instruction = instruction;
+            Measurement = measurement;
+            Recipe = recipe;
+            Style = style;
+            Tag = tag;
+            Tool = tool;
+            Transparency = transparency;
+            Unit = unit;
+        }
     }
 }

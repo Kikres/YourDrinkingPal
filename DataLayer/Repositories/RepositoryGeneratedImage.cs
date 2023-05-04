@@ -45,21 +45,33 @@ public class RepositoryGeneratedImage : IRepositoryGeneratedImage
     //Manipulate
     public GeneratedImage Create(GeneratedImage GeneratedImage)
     {
-        _context.GeneratedImage.Add(GeneratedImage);
-        _context.SaveChanges();
+        try
+        {
+            _context.GeneratedImage.Add(GeneratedImage);
+            _context.SaveChanges();
+        }
+        catch (Exception e) { throw new DbUpdateException(e.Message); }
         return GeneratedImage;
     }
 
     public int Delete(GeneratedImage GeneratedImage)
     {
-        _context.GeneratedImage.Remove(GeneratedImage);
-        return _context.SaveChanges();
+        try
+        {
+            _context.GeneratedImage.Remove(GeneratedImage);
+            return _context.SaveChanges();
+        }
+        catch (Exception e) { throw new DbUpdateException(e.Message); }
     }
 
     public int Delete(IEnumerable<GeneratedImage> GeneratedImages)
     {
-        foreach (GeneratedImage GeneratedImage in GeneratedImages) _context.GeneratedImage.Remove(GeneratedImage);
-        return _context.SaveChanges();
+        try
+        {
+            foreach (GeneratedImage GeneratedImage in GeneratedImages) _context.GeneratedImage.Remove(GeneratedImage);
+            return _context.SaveChanges();
+        }
+        catch (Exception e) { throw new DbUpdateException(e.Message); }
     }
 
     public int Update(GeneratedImage GeneratedImage)
@@ -69,10 +81,7 @@ public class RepositoryGeneratedImage : IRepositoryGeneratedImage
             _context.GeneratedImage.Update(GeneratedImage);
             return _context.SaveChanges();
         }
-        catch (Exception e)
-        {
-            throw;
-        }
+        catch (Exception e) { throw new DbUpdateException(e.Message); }
     }
 
     private IQueryable<GeneratedImage> IncludeParameters(QueryParamGeneratedImage queryParamGeneratedImage, DbSet<GeneratedImage> context)

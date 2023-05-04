@@ -37,27 +37,43 @@ public class RepositoryFlavour : IRepositoryFlavour
     //Manipulate
     public Flavour Create(Flavour flavour)
     {
-        _context.Flavour.Add(flavour);
-        _context.SaveChanges();
+        try
+        {
+            _context.Flavour.Add(flavour);
+            _context.SaveChanges();
+        }
+        catch (Exception e) { throw new DbUpdateException(e.Message); }
         return flavour;
     }
 
     public int Delete(Flavour flavour)
     {
-        _context.Flavour.Remove(flavour);
-        return _context.SaveChanges();
+        try
+        {
+            _context.Flavour.Remove(flavour);
+            return _context.SaveChanges();
+        }
+        catch (Exception e) { throw new DbUpdateException(e.Message); }
     }
 
     public int Delete(IEnumerable<Flavour> flavours)
     {
-        foreach (Flavour flavour in flavours) _context.Flavour.Remove(flavour);
-        return _context.SaveChanges();
+        try
+        {
+            foreach (Flavour flavour in flavours) _context.Flavour.Remove(flavour);
+            return _context.SaveChanges();
+        }
+        catch (Exception e) { throw new DbUpdateException(e.Message); }
     }
 
     public int Update(Flavour flavour)
     {
-        _context.Flavour.Update(flavour);
-        return _context.SaveChanges();
+        try
+        {
+            _context.Flavour.Update(flavour);
+            return _context.SaveChanges();
+        }
+        catch (Exception e) { throw new DbUpdateException(e.Message); }
     }
 
     private IQueryable<Flavour> IncludeParameters(QueryParamFlavour queryParamFlavour, DbSet<Flavour> context)

@@ -37,27 +37,43 @@ public class RepositoryGlass : IRepositoryGlass
     //Manipulate
     public Glass Create(Glass glass)
     {
-        _context.Glass.Add(glass);
-        _context.SaveChanges();
+        try
+        {
+            _context.Glass.Add(glass);
+            _context.SaveChanges();
+        }
+        catch (Exception e) { throw new DbUpdateException(e.Message); }
         return glass;
     }
 
     public int Delete(Glass glass)
     {
-        _context.Glass.Remove(glass);
-        return _context.SaveChanges();
+        try
+        {
+            _context.Glass.Remove(glass);
+            return _context.SaveChanges();
+        }
+        catch (Exception e) { throw new DbUpdateException(e.Message); }
     }
 
     public int Delete(IEnumerable<Glass> obj)
     {
-        foreach (Glass glass in obj) _context.Glass.Remove(glass);
-        return _context.SaveChanges();
+        try
+        {
+            foreach (Glass glass in obj) _context.Glass.Remove(glass);
+            return _context.SaveChanges();
+        }
+        catch (Exception e) { throw new DbUpdateException(e.Message); }
     }
 
     public int Update(Glass glass)
     {
-        _context.Glass.Update(glass);
-        return _context.SaveChanges();
+        try
+        {
+            _context.Glass.Update(glass);
+            return _context.SaveChanges();
+        }
+        catch (Exception e) { throw new DbUpdateException(e.Message); }
     }
 
     private IQueryable<Glass> IncludeParameters(QueryParamGlass queryParamGlass, DbSet<Glass> context)

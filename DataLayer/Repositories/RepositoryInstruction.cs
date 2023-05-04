@@ -37,27 +37,43 @@ public class RepositoryInstruction : IRepositoryInstruction
     //Manipulate
     public Instruction Create(Instruction instruction)
     {
-        _context.Instruction.Add(instruction);
-        _context.SaveChanges();
+        try
+        {
+            _context.Instruction.Add(instruction);
+            _context.SaveChanges();
+        }
+        catch (Exception e) { throw new DbUpdateException(e.Message); }
         return instruction;
     }
 
     public int Delete(Instruction instruction)
     {
-        _context.Instruction.Remove(instruction);
-        return _context.SaveChanges();
+        try
+        {
+            _context.Instruction.Remove(instruction);
+            return _context.SaveChanges();
+        }
+        catch (Exception e) { throw new DbUpdateException(e.Message); }
     }
 
     public int Delete(IEnumerable<Instruction> instructions)
     {
-        foreach (Instruction instruction in instructions) _context.Instruction.Remove(instruction);
-        return _context.SaveChanges();
+        try
+        {
+            foreach (Instruction instruction in instructions) _context.Instruction.Remove(instruction);
+            return _context.SaveChanges();
+        }
+        catch (Exception e) { throw new DbUpdateException(e.Message); }
     }
 
     public int Update(Instruction instruction)
     {
-        _context.Instruction.Update(instruction);
-        return _context.SaveChanges();
+        try
+        {
+            _context.Instruction.Update(instruction);
+            return _context.SaveChanges();
+        }
+        catch (Exception e) { throw new DbUpdateException(e.Message); }
     }
 
     private IQueryable<Instruction> IncludeParameters(QueryParamInstruction queryParamInstruction, DbSet<Instruction> context)

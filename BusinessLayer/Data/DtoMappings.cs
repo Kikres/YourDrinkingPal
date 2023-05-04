@@ -42,7 +42,5 @@ public class DtoMappings : Profile
         CreateMap<Transparency, TransparencyDto>().ReverseMap();
 
         CreateMap<Unit, UnitDto>().ReverseMap();
-
-        //CreateMap<Client, ClientUpdateDto>().ReverseMap().ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
     }
 }

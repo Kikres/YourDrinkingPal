@@ -37,27 +37,43 @@ public class RepositoryUnit : IRepositoryUnit
     //Manipulate
     public Unit Create(Unit unit)
     {
-        _context.Unit.Add(unit);
-        _context.SaveChanges();
+        try
+        {
+            _context.Unit.Add(unit);
+            _context.SaveChanges();
+        }
+        catch (Exception e) { throw new DbUpdateException(e.Message); }
         return unit;
     }
 
     public int Delete(Unit unit)
     {
-        _context.Unit.Remove(unit);
-        return _context.SaveChanges();
+        try
+        {
+            _context.Unit.Remove(unit);
+            return _context.SaveChanges();
+        }
+        catch (Exception e) { throw new DbUpdateException(e.Message); }
     }
 
     public int Delete(IEnumerable<Unit> units)
     {
-        foreach (Unit unit in units) _context.Unit.Remove(unit);
-        return _context.SaveChanges();
+        try
+        {
+            foreach (Unit unit in units) _context.Unit.Remove(unit);
+            return _context.SaveChanges();
+        }
+        catch (Exception e) { throw new DbUpdateException(e.Message); }
     }
 
     public int Update(Unit unit)
     {
-        _context.Unit.Update(unit);
-        return _context.SaveChanges();
+        try
+        {
+            _context.Unit.Update(unit);
+            return _context.SaveChanges();
+        }
+        catch (Exception e) { throw new DbUpdateException(e.Message); }
     }
 
     private IQueryable<Unit> IncludeParameters(QueryParamUnit queryParamUnit, DbSet<Unit> context)

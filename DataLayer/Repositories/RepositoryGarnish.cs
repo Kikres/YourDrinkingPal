@@ -37,27 +37,43 @@ public class RepositoryGarnish : IRepositoryGarnish
     //Manipulate
     public Garnish Create(Garnish garnish)
     {
-        _context.Garnish.Add(garnish);
-        _context.SaveChanges();
+        try
+        {
+            _context.Garnish.Add(garnish);
+            _context.SaveChanges();
+        }
+        catch (Exception e) { throw new DbUpdateException(e.Message); }
         return garnish;
     }
 
     public int Delete(Garnish garnish)
     {
-        _context.Garnish.Remove(garnish);
-        return _context.SaveChanges();
+        try
+        {
+            _context.Garnish.Remove(garnish);
+            return _context.SaveChanges();
+        }
+        catch (Exception e) { throw new DbUpdateException(e.Message); }
     }
 
     public int Delete(IEnumerable<Garnish> garnishs)
     {
-        foreach (Garnish garnish in garnishs) _context.Garnish.Remove(garnish);
-        return _context.SaveChanges();
+        try
+        {
+            foreach (Garnish garnish in garnishs) _context.Garnish.Remove(garnish);
+            return _context.SaveChanges();
+        }
+        catch (Exception e) { throw new DbUpdateException(e.Message); }
     }
 
     public int Update(Garnish garnish)
     {
-        _context.Garnish.Update(garnish);
-        return _context.SaveChanges();
+        try
+        {
+            _context.Garnish.Update(garnish);
+            return _context.SaveChanges();
+        }
+        catch (Exception e) { throw new DbUpdateException(e.Message); }
     }
 
     private IQueryable<Garnish> IncludeParameters(QueryParamGarnish queryParamGarnish, DbSet<Garnish> context)

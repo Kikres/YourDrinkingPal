@@ -1,11 +1,14 @@
 ﻿@using BusinessLayer.Models.DTO; 
 @model DrinkCreateViewModel 
-@{ ViewData["Title"] = "Home Page"; }
+
+@{
+    ViewData["Title"] = "Skapa recept";
+}
 
 
 <section class="container mx-auto bg-white dark:bg-gray-900">
     <div class="py-8 px-4 mx-auto md:max-w-6xl lg:py-16">
-        <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Skapa en ny drink</h2>
+        <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Skapa recept</h2>
         <form asp-controller="drink" asp-action="create" method="post">
             <div class="gap-4 sm:grid sm:grid-cols-2 xl:grid-cols-3 sm:gap-6 sm:mb-2">
                 <div class="mb-4 space-y-4 xl:col-span-2 self-center">
@@ -109,7 +112,6 @@
                             <div class="w-full">
 
                                 <select asp-for="DrinkCreateDto.Recipe.Measurements[0].UnitId" class="input-multi-input bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                    <option selected disabled>enhet</option>
                                     @for (int i = 0; i < Model.Units.Count; i++)
                                     {
                                         var unit = Model.Units[i];
@@ -226,4 +228,43 @@
     </div>
 </section>
 
-<script src="~/js/DrinkCreate.js"></script>
+<script>
+const inputMultiContainer = document.querySelectorAll(".input-multi-container");
+
+inputMultiContainer.forEach((container) => {
+    const list = container.querySelector(".input-multi-list");
+    const template = container.querySelector("template");
+    const buttonPlus = container.querySelector(".input-multi-plus");
+    const buttonMinus = container.querySelector(".input-multi-minus");
+
+    buttonPlus.addEventListener("click", (target) => {
+        target.preventDefault();
+        const templateClone = template.content.cloneNode(true);
+        var inputs = templateClone.querySelectorAll(".input-multi-input");
+
+        inputs.forEach((input) => {
+            input.id = input.id.replace(0, list.children.length);
+            input.name = input.name.replace(0, list.children.length);
+        });
+
+        if (list.children.length >= 1) {
+            buttonMinus.classList.remove("hidden");
+        }
+
+        list.appendChild(templateClone);
+        console.log(templateClone);
+        var inputs = templateClone.querySelectorAll(".ingridient-input");
+    });
+
+    buttonMinus.addEventListener("click", (target) => {
+        if (list.children.length <= 2) {
+            buttonMinus.classList.add("hidden");
+        }
+
+        if (list.children.length >= 1) {
+            list.children[list.children.length - 1].remove();
+        }
+    });
+});
+    
+</script>

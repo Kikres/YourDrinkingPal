@@ -37,27 +37,43 @@ public class RepositoryRecipe : IRepositoryRecipe
     //Manipulate
     public Recipe Create(Recipe recipe)
     {
-        _context.Recipe.Add(recipe);
-        _context.SaveChanges();
+        try
+        {
+            _context.Recipe.Add(recipe);
+            _context.SaveChanges();
+        }
+        catch (Exception e) { throw new DbUpdateException(e.Message); }
         return recipe;
     }
 
     public int Delete(Recipe recipe)
     {
-        _context.Recipe.Remove(recipe);
-        return _context.SaveChanges();
+        try
+        {
+            _context.Recipe.Remove(recipe);
+            return _context.SaveChanges();
+        }
+        catch (Exception e) { throw new DbUpdateException(e.Message); }
     }
 
     public int Delete(IEnumerable<Recipe> recipes)
     {
-        foreach (Recipe recipe in recipes) _context.Recipe.Remove(recipe);
-        return _context.SaveChanges();
+        try
+        {
+            foreach (Recipe recipe in recipes) _context.Recipe.Remove(recipe);
+            return _context.SaveChanges();
+        }
+        catch (Exception e) { throw new DbUpdateException(e.Message); }
     }
 
     public int Update(Recipe recipe)
     {
-        _context.Recipe.Update(recipe);
-        return _context.SaveChanges();
+        try
+        {
+            _context.Recipe.Update(recipe);
+            return _context.SaveChanges();
+        }
+        catch (Exception e) { throw new DbUpdateException(e.Message); }
     }
 
     private IQueryable<Recipe> IncludeParameters(QueryParamRecipe queryParamRecipe, DbSet<Recipe> context)

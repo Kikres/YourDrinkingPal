@@ -1,9 +1,9 @@
-using ApplicationLayer.Models.Partial;
+using BusinessLayer.Models.DTO;
 
 namespace ApplicationLayer.Models
 {
     public class HomeViewModel
     {
-        public DrinksFeaturedViewModel DrinksFeaturedViewModel { get; set; }
+        public List<DrinkDto> Drinks { get; set; }
     }
 }

@@ -2,6 +2,7 @@
 using DataLayer.Models.Domain;
 using DataLayer.Models.QueryParams;
 using Microsoft.EntityFrameworkCore;
+using System.Data.Common;
 using Color = DataLayer.Models.Domain.Color;
 
 namespace DataLayer.Repositories;
@@ -38,27 +39,43 @@ public class RepositoryColor : IRepositoryColor
     //Manipulate
     public Color Create(Color color)
     {
-        _context.Color.Add(color);
-        _context.SaveChanges();
+        try
+        {
+            _context.Color.Add(color);
+            _context.SaveChanges();
+        }
+        catch (Exception e) { throw new DbUpdateException(e.Message); }
         return color;
     }
 
     public int Delete(Color color)
     {
-        _context.Color.Remove(color);
-        return _context.SaveChanges();
+        try
+        {
+            _context.Color.Remove(color);
+            return _context.SaveChanges();
+        }
+        catch (Exception e) { throw new DbUpdateException(e.Message); }
     }
 
     public int Delete(IEnumerable<Color> colors)
     {
-        foreach (Color color in colors) _context.Color.Remove(color);
-        return _context.SaveChanges();
+        try
+        {
+            foreach (Color color in colors) _context.Color.Remove(color);
+            return _context.SaveChanges();
+        }
+        catch (Exception e) { throw new DbUpdateException(e.Message); }
     }
 
     public int Update(Color color)
     {
-        _context.Color.Update(color);
-        return _context.SaveChanges();
+        try
+        {
+            _context.Color.Update(color);
+            return _context.SaveChanges();
+        }
+        catch (Exception e) { throw new DbUpdateException(e.Message); }
     }
 
     private IQueryable<Color> IncludeParameters(QueryParamColor queryParamColor, DbSet<Color> context)

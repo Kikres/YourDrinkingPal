@@ -37,27 +37,43 @@ public class RepositoryTag : IRepositoryTag
     //Manipulate
     public Tag Create(Tag tag)
     {
-        _context.Tag.Add(tag);
-        _context.SaveChanges();
+        try
+        {
+            _context.Tag.Add(tag);
+            _context.SaveChanges();
+        }
+        catch (Exception e) { throw new DbUpdateException(e.Message); }
         return tag;
     }
 
     public int Delete(Tag tag)
     {
-        _context.Tag.Remove(tag);
-        return _context.SaveChanges();
+        try
+        {
+            _context.Tag.Remove(tag);
+            return _context.SaveChanges();
+        }
+        catch (Exception e) { throw new DbUpdateException(e.Message); }
     }
 
     public int Delete(IEnumerable<Tag> tags)
     {
-        foreach (Tag tag in tags) _context.Tag.Remove(tag);
-        return _context.SaveChanges();
+        try
+        {
+            foreach (Tag tag in tags) _context.Tag.Remove(tag);
+            return _context.SaveChanges();
+        }
+        catch (Exception e) { throw new DbUpdateException(e.Message); }
     }
 
     public int Update(Tag tag)
     {
-        _context.Tag.Update(tag);
-        return _context.SaveChanges();
+        try
+        {
+            _context.Tag.Update(tag);
+            return _context.SaveChanges();
+        }
+        catch (Exception e) { throw new DbUpdateException(e.Message); }
     }
 
     private IQueryable<Tag> IncludeParameters(QueryParamTag queryParamTag, DbSet<Tag> context)

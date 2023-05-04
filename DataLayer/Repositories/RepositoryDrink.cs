@@ -8,19 +8,13 @@ namespace DataLayer.Repositories;
 public interface IRepositoryDrink
 {
     Drink Create(Drink drink);
-
     int Delete(Drink drink);
-
     int Delete(IEnumerable<Drink> drinks);
-
     List<Drink> GetAll(QueryParamDrink queryParamDrink);
-
+    List<Drink> GetAllPublished(QueryParamDrink queryParamDrink);
     Drink? GetById(int id, QueryParamDrink queryParamDrink);
-
-    Drink? GetByImageId(int imageId, QueryParamDrink queryParamDrink);
-
+    Drink? GetByImageId(int uploadedImageId, QueryParamDrink queryParamDrink);
     Drink? GetByUrlSlug(string urlSlug, QueryParamDrink queryParamDrink);
-
     int Update(Drink drink);
 }
 
@@ -35,6 +29,7 @@ public class RepositoryDrink : IRepositoryDrink
 
     //Fetch
     public List<Drink> GetAll(QueryParamDrink queryParamDrink) => IncludeParameters(queryParamDrink, _context.Drink).ToList();
+    public List<Drink> GetAllPublished(QueryParamDrink queryParamDrink) => IncludeParameters(queryParamDrink, _context.Drink).Where(o => o.IsPublished).ToList();
 
     public Drink? GetById(int id, QueryParamDrink queryParamDrink) => IncludeParameters(queryParamDrink, _context.Drink).FirstOrDefault(o => o.Id == id);
 
@@ -45,27 +40,43 @@ public class RepositoryDrink : IRepositoryDrink
     //Manipulate
     public Drink Create(Drink drink)
     {
-        _context.Drink.Add(drink);
-        _context.SaveChanges();
+        try
+        {
+            _context.Drink.Add(drink);
+            _context.SaveChanges();
+        }
+        catch (Exception e) { throw new DbUpdateException(e.Message); }
         return drink;
     }
 
     public int Delete(Drink drink)
     {
-        _context.Drink.Remove(drink);
-        return _context.SaveChanges();
+        try
+        {
+            _context.Drink.Remove(drink);
+            return _context.SaveChanges();
+        }
+        catch (Exception e) { throw new DbUpdateException(e.Message); }
     }
 
     public int Delete(IEnumerable<Drink> drinks)
     {
-        foreach (Drink drink in drinks) _context.Drink.Remove(drink);
-        return _context.SaveChanges();
+        try
+        {
+            foreach (Drink drink in drinks) _context.Drink.Remove(drink);
+            return _context.SaveChanges();
+        }
+        catch (Exception e) { throw new DbUpdateException(e.Message); }
     }
 
     public int Update(Drink drink)
     {
-        _context.Drink.Update(drink);
-        return _context.SaveChanges();
+        try
+        {
+            _context.Drink.Update(drink);
+            return _context.SaveChanges();
+        }
+        catch (Exception e) { throw new DbUpdateException(e.Message); }
     }
 
     private IQueryable<Drink> IncludeParameters(QueryParamDrink queryParamDrink, DbSet<Drink> context)

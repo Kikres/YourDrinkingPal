@@ -37,27 +37,43 @@ public class RepositoryIngridient : IRepositoryIngridient
     //Manipulate
     public Ingridient Create(Ingridient ingridient)
     {
-        _context.Ingridient.Add(ingridient);
-        _context.SaveChanges();
+        try
+        {
+            _context.Ingridient.Add(ingridient);
+            _context.SaveChanges();
+        }
+        catch (Exception e) { throw new DbUpdateException(e.Message); }
         return ingridient;
     }
 
     public int Delete(Ingridient ingridient)
     {
-        _context.Ingridient.Remove(ingridient);
-        return _context.SaveChanges();
+        try
+        {
+            _context.Ingridient.Remove(ingridient);
+            return _context.SaveChanges();
+        }
+        catch (Exception e) { throw new DbUpdateException(e.Message); }
     }
 
     public int Delete(IEnumerable<Ingridient> ingridients)
     {
-        foreach (Ingridient ingridient in ingridients) _context.Ingridient.Remove(ingridient);
-        return _context.SaveChanges();
+        try
+        {
+            foreach (Ingridient ingridient in ingridients) _context.Ingridient.Remove(ingridient);
+            return _context.SaveChanges();
+        }
+        catch (Exception e) { throw new DbUpdateException(e.Message); }
     }
 
     public int Update(Ingridient ingridient)
     {
-        _context.Ingridient.Update(ingridient);
-        return _context.SaveChanges();
+        try
+        {
+            _context.Ingridient.Update(ingridient);
+            return _context.SaveChanges();
+        }
+        catch (Exception e) { throw new DbUpdateException(e.Message); }
     }
 
     private IQueryable<Ingridient> IncludeParameters(QueryParamIngridient queryParamIngridient, DbSet<Ingridient> context)

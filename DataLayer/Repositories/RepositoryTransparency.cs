@@ -37,27 +37,43 @@ public class RepositoryTransparency : IRepositoryTransparency
     //Manipulate
     public Transparency Create(Transparency transparency)
     {
-        _context.Transparency.Add(transparency);
-        _context.SaveChanges();
+        try
+        {
+            _context.Transparency.Add(transparency);
+            _context.SaveChanges();
+        }
+        catch (Exception e) { throw new DbUpdateException(e.Message); }
         return transparency;
     }
 
     public int Delete(Transparency transparency)
     {
-        _context.Transparency.Remove(transparency);
+        try
+        {
+            _context.Transparency.Remove(transparency);
+        }
+        catch (Exception e) { throw new DbUpdateException(e.Message); }
         return _context.SaveChanges();
     }
 
     public int Delete(IEnumerable<Transparency> transparencys)
     {
-        foreach (Transparency transparency in transparencys) _context.Transparency.Remove(transparency);
-        return _context.SaveChanges();
+        try
+        {
+            foreach (Transparency transparency in transparencys) _context.Transparency.Remove(transparency);
+            return _context.SaveChanges();
+        }
+        catch (Exception e) { throw new DbUpdateException(e.Message); }
     }
 
     public int Update(Transparency transparency)
     {
-        _context.Transparency.Update(transparency);
-        return _context.SaveChanges();
+        try
+        {
+            _context.Transparency.Update(transparency);
+            return _context.SaveChanges();
+        }
+        catch (Exception e) { throw new DbUpdateException(e.Message); }
     }
 
     private IQueryable<Transparency> IncludeParameters(QueryParamTransparency queryParamTransparency, DbSet<Transparency> context)

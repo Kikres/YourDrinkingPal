@@ -37,27 +37,43 @@ public class RepositoryStyle : IRepositoryStyle
     //Manipulate
     public Style Create(Style style)
     {
-        _context.Style.Add(style);
-        _context.SaveChanges();
+        try
+        {
+            _context.Style.Add(style);
+            _context.SaveChanges();
+        }
+        catch (Exception e) { throw new DbUpdateException(e.Message); }
         return style;
     }
 
     public int Delete(Style style)
     {
-        _context.Style.Remove(style);
-        return _context.SaveChanges();
+        try
+        {
+            _context.Style.Remove(style);
+            return _context.SaveChanges();
+        }
+        catch (Exception e) { throw new DbUpdateException(e.Message); }
     }
 
     public int Delete(IEnumerable<Style> styles)
     {
-        foreach (Style style in styles) _context.Style.Remove(style);
-        return _context.SaveChanges();
+        try
+        {
+            foreach (Style style in styles) _context.Style.Remove(style);
+            return _context.SaveChanges();
+        }
+        catch (Exception e) { throw new DbUpdateException(e.Message); }
     }
 
     public int Update(Style style)
     {
-        _context.Style.Update(style);
-        return _context.SaveChanges();
+        try
+        {
+            _context.Style.Update(style);
+            return _context.SaveChanges();
+        }
+        catch (Exception e) { throw new DbUpdateException(e.Message); }
     }
 
     private IQueryable<Style> IncludeParameters(QueryParamStyle queryParamStyle, DbSet<Style> context)
