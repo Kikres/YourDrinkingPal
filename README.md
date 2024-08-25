@@ -10,3 +10,5 @@
 - **Consistent Visual Style**: Ensure that all generated images maintain a cohesive look that complements the overall design of the website.
 
 Explore AI-generated drink images with YourDrinkingPal!
+
+Please note that this project is currently not operational due to the discontinuation of one of the services it relies on. Additionally, several API keys are required for full functionality, which are not provided in this repository. The code is available for reference and demonstration purposes only.
